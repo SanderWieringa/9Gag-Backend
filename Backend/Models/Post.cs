@@ -21,10 +21,8 @@ namespace Backend.Models
         public int PhotoId { get; set; }
         public byte[] Bytes { get; set; }
 
-        [ForeignKey("PostId")]
-        public int PostId { get; set; }
-
         // Reverse navigation property
+        public int PostForeignKey { get; set; }
         public Post Post { get; set; }
     }
 }

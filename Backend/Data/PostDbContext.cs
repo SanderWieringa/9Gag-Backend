@@ -16,7 +16,9 @@ namespace Backend.Data
         {
             modelBuilder.Entity<Post>()
                 .HasOne(b => b.Photo)
-                .WithOne();
+                .WithOne(p => p.Post)
+                .HasForeignKey<Photo>(p => p.PostForeignKey);
+                
 
             modelBuilder.Entity<Post>()
                 .Navigation(b => b.Photo)

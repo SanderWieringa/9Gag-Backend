@@ -19,7 +19,12 @@ namespace Backend.Data
             {
                 Console.WriteLine("--> Seeding data...");
 
-                var photo = new Photo { PhotoId = 1, Bytes = {} };
+                byte[] data = new byte[3];
+                data[0] = byte.MinValue;
+                data[1] = 0;
+                data[2] = byte.MaxValue;
+
+                var photo = new Photo { PhotoId = 1, Bytes = data };
 
 
                 context.Posts.AddRange(
