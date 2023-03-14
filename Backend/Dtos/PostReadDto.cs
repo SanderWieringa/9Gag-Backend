@@ -1,4 +1,5 @@
 ﻿using Backend.Models;
+using System.Text.Json.Serialization;
 
 namespace Backend.Dtos
 {
@@ -8,6 +9,6 @@ namespace Backend.Dtos
 
         public string Title { get; set; }
 
-        public Photo Photo { get; set; }
+        public IFormFile Photo { get; set; }
     }
 }

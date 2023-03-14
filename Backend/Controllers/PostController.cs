@@ -44,7 +44,7 @@ namespace Backend.Controllers
         }
 
         [HttpPost]
-        public ActionResult<PostReadDto> CreatePost(PostCreateDto postCreateDto)
+        public ActionResult<PostReadDto> CreatePost([FromForm] PostCreateDto postCreateDto)
         {
             Console.WriteLine("--> Creating Post....");
 

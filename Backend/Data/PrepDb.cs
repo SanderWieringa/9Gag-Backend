@@ -24,12 +24,12 @@ namespace Backend.Data
                 data[1] = 0;
                 data[2] = byte.MaxValue;
 
-                var photo = new Photo { PhotoId = 1, Bytes = data };
+                //var photo = new Photo { PhotoId = 1, Photo = data };
 
 
                 context.Posts.AddRange(
                     
-                    new Post { PostId = 1, Title = "Test", Photo = photo }
+                    new Post { PostId = 1, Title = "Test", Photo = null }
                 );
 
                 context.SaveChanges();

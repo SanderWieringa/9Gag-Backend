@@ -1,9 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
 
 namespace Backend.Models
 {
+
     public class Post
     {
         [Key]
@@ -12,17 +15,18 @@ namespace Backend.Models
         public string Title { get; set; }
 
         // Navigation property
-        public Photo Photo { get; set; }
+        [NotMapped]
+        public IFormFile? Photo { get; set; }
     }
 
-    public class Photo
+    /*public class Photo
     {
         [Key]
-        public int PhotoId { get; set; }
-        public byte[] Bytes { get; set; }
+        public int PhotoId { get; set; }    
+        public IFormFile Bytes { get; set; }
 
         // Reverse navigation property
         public int PostForeignKey { get; set; }
         public Post Post { get; set; }
-    }
+    }*/
 }

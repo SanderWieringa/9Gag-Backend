@@ -12,7 +12,7 @@ namespace Backend.Data
 
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        /*protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Post>()
                 .HasOne(b => b.Photo)
@@ -23,9 +23,9 @@ namespace Backend.Data
             modelBuilder.Entity<Post>()
                 .Navigation(b => b.Photo)
                 .UsePropertyAccessMode(PropertyAccessMode.Property);
-        }
+        }*/
 
         public DbSet<Post> Posts { get; set; }
-        public DbSet<Photo> Photos { get; set; }
+        /*public DbSet<Photo> Photos { get; set; }*/
     }
 }
