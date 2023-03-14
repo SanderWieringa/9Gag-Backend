@@ -2,7 +2,7 @@
 
 namespace Backend.Data
 {
-    public interface IPostRepo
+    public interface IPostCollectionRepo
     {
         bool SaveChanges();
 

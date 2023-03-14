@@ -10,10 +10,10 @@ namespace Backend.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IPostRepo _repository;
+        private readonly IPostCollectionRepo _repository;
         private readonly IMapper _mapper;
 
-        public PostController(IPostRepo repository, IMapper mapper)
+        public PostController(IPostCollectionRepo repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;

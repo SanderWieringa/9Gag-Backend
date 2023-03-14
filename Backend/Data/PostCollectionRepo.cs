@@ -3,11 +3,11 @@ using System;
 
 namespace Backend.Data
 {
-    public class PostRepo : IPostRepo
+    public class PostCollectionRepo : IPostCollectionRepo
     {
         private readonly PostDbContext _context;
 
-        public PostRepo(PostDbContext context)
+        public PostCollectionRepo(PostDbContext context)
         {
             _context = context;
         }
@@ -29,7 +29,7 @@ namespace Backend.Data
 
         public Post GetPostById(int id)
         {
-            return _context.Posts.FirstOrDefault(p => p.Id == id);
+            return _context.Posts.FirstOrDefault(p => p.PostId == id);
         }
 
         public bool SaveChanges()

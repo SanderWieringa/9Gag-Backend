@@ -30,7 +30,7 @@ namespace Backend
         {
             services.AddDbContext<PostDbContext>(opt =>
                 opt.UseInMemoryDatabase("InMem"));
-            services.AddScoped<IPostRepo, PostRepo>();
+            services.AddScoped<IPostCollectionRepo, PostCollectionRepo>();
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen(c =>

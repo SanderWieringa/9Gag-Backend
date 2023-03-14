@@ -1,6 +1,7 @@
 ﻿using Backend.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Reflection.Metadata;
 
 namespace Backend.Data
 {
@@ -11,6 +12,18 @@ namespace Backend.Data
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Post>()
+                .HasOne(b => b.Photo)
+                .WithOne();
+
+            modelBuilder.Entity<Post>()
+                .Navigation(b => b.Photo)
+                .UsePropertyAccessMode(PropertyAccessMode.Property);
+        }
+
         public DbSet<Post> Posts { get; set; }
+        public DbSet<Photo> Photos { get; set; }
     }
 }
