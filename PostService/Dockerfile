@@ -7,16 +7,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Backend/Backend.csproj", "Backend/"]
-RUN dotnet restore "Backend/Backend.csproj"
+COPY ["PostService/PostService.csproj", "PostService/"]
+RUN dotnet restore "PostService/PostService.csproj"
 COPY . .
-WORKDIR "/src/Backend"
-RUN dotnet build "Backend.csproj" -c Release -o /app/build
+WORKDIR "/src/PostService"
+RUN dotnet build "PostService.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Backend.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "PostService.csproj" -c Release -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Backend.dll"]
+ENTRYPOINT ["dotnet", "PostService.dll"]
