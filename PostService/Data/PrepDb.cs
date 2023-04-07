@@ -1,44 +1,61 @@
 ﻿using Backend.Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Backend.Data
 {
     public static class PrepDb
     {
-        public static void PrepPopulation(IApplicationBuilder app)
+        public static void PrepPopulation(IApplicationBuilder app, bool isProduction)
         {
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
-                SeedData(serviceScope.ServiceProvider.GetService<PostDbContext>());
+                SeedData(serviceScope.ServiceProvider.GetService<PostDbContext>(), isProduction);
             }
         }
 
-        private static void SeedData(PostDbContext context)
+        private static void SeedData(PostDbContext context, bool isProduction)
         {
-            /*
-            if (!context.Posts.Any())
+            if (isProduction)
             {
-                Console.WriteLine("--> Seeding data...");
+                Console.WriteLine("--> Attempting to apply migrations...");
+                try
+                {
+                    context.Database.Migrate();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine($"--> Could not run migrations: {e.Message}");
+                }
 
-                byte[] data = new byte[3];
-                data[0] = byte.MinValue;
-                data[1] = 0;
-                data[2] = byte.MaxValue;
-
-                //var photo = new Photo { PhotoId = 1, Photo = data };
-
-
-                context.Posts.AddRange(
-                    
-                    new Post { PostId = 1, Title = "Test", Photo = null }
-                );
-
-                context.SaveChanges();
             }
-            else
+
+            else 
             {
-                Console.WriteLine("--> We already have data!");
-            }*/
+                if (!context.Posts.Any())
+                {
+                    Console.WriteLine("--> Seeding data...");
+
+                    /* byte[] data = new byte[3];
+                     data[0] = byte.MinValue;
+                     data[1] = 0;
+                     data[2] = byte.MaxValue;*/
+
+                    //var photo = new Photo { PhotoId = 1, Photo = data };
+
+
+                    context.Posts.AddRange(
+
+                        new Post { Id = 1, Title = "Test" }
+                    );
+
+                    context.SaveChanges();
+                }
+                else
+                {
+                    Console.WriteLine("--> We already have data!");
+                }
+            }
         }
     }
 }

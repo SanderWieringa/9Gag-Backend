@@ -36,10 +36,11 @@ namespace Backend
             {
                 Console.WriteLine("--> Using SqlServer Db");
                 Console.WriteLine("--> Attempt 1");
-                /*services.AddDbContext<PostDbContext>(opt =>
-                    opt.UseSqlServer(Configuration.GetConnectionString("PlatformConn")));*/
+                Console.WriteLine("--> Actual SqlServer Db");
                 services.AddDbContext<PostDbContext>(opt =>
-                    opt.UseInMemoryDatabase("InMem"));
+                    opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));
+            /*services.AddDbContext<PostDbContext>(opt =>
+                opt.UseInMemoryDatabase("InMem"));*/
             }
             else
             {
@@ -47,6 +48,7 @@ namespace Backend
                 services.AddDbContext<PostDbContext>(opt =>
                     opt.UseInMemoryDatabase("InMem"));
             }
+
             services.AddScoped<IPostCollectionRepo, PostCollectionRepo>();
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -89,7 +91,7 @@ namespace Backend
                 endpoints.MapControllers();
             });
 
-            PrepDb.PrepPopulation(app);
+            PrepDb.PrepPopulation(app, env.IsProduction());
         }
     }
 }
