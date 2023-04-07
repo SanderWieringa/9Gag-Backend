@@ -43,6 +43,11 @@ namespace Backend
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
+            services.AddStackExchangeRedisCache(options =>
+            {
+                options.Configuration = Configuration.GetConnectionString("Redis");
+                options.InstanceName = "Post_";
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

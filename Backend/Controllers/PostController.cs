@@ -8,6 +8,8 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.IO;
+using Microsoft.Extensions.Caching.Distributed;
+using Backend.Extensions;
 
 namespace Backend.Controllers
 {
@@ -15,32 +17,48 @@ namespace Backend.Controllers
     [ApiController]
     public class PostController : ControllerBase
     {
-        private readonly IPostCollectionRepo _repository;
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
+        private readonly IDistributedCache _cache;
+        private IEnumerable<Post> posts;
+        private string loadLocation = "";
 
-        public PostController(IPostCollectionRepo repository, IMapper mapper, IMediator mediator)
+        public PostController(IMapper mapper, IMediator mediator, IDistributedCache cache)
         {
-            _repository = repository;
             _mapper = mapper;
             _mediator = mediator;
+            _cache = cache;
         }
 
         [HttpGet]
         public async Task<IEnumerable<Post>> Get()
         {
-            return await _mediator.Send(new GetPostListQuery());
+            posts = null;
+            loadLocation = null;
+
+            string recordKey = "Post_" + DateTime.Now.ToString("yyyyMMdd_hhmm");
+
+            posts = await _cache.GetRecordAsync<IEnumerable<Post>>(recordKey);
+
+            if (posts == null)
+            {
+                posts = await _mediator.Send(new GetPostListQuery());
+
+                loadLocation = $"Loaded from API at: {DateTime.Now}";
+                Console.WriteLine("loadLocation = Database");
+                Thread.Sleep(3000);
+
+                await _cache.SetRecordAsync(recordKey, posts);
+            }
+            else
+            {
+                loadLocation = $"Loaded from the cache at: {DateTime.Now}";
+                Console.WriteLine("loadLocation = Cache");
+            }
+            
+
+            return posts;
         }
-
-        /*[HttpGet]
-        public ActionResult<IEnumerable<PostReadDto>> GetPosts()
-        {
-            Console.WriteLine("--> Getting Posts....");
-
-            var platformItems = _repository.GetAllPosts();
-
-            return Ok(_mapper.Map<IEnumerable<PostReadDto>>(platformItems));
-        }*/
 
         [HttpGet("{id}")]
         public async Task<Post> Get(int id)
@@ -48,40 +66,11 @@ namespace Backend.Controllers
             return await _mediator.Send(new GetPostByIdQuery(id));
         }
 
-        /*[HttpGet("{id}", Name = "GetPostById")]
-        public ActionResult<PostReadDto> GetPostById(int id)
-        {
-            Console.WriteLine("--> Getting Post By Id....");
-
-            var postItem = _repository.GetPostById(id);
-            if (postItem != null)
-            {
-                return Ok(_mapper.Map<PostReadDto>(postItem));
-            }
-
-            return NotFound();
-        }*/
-
         [HttpPost]
         public async Task<Post> Post([FromBody] PostCreateDto postCreateDto)
         {
             var postModel = _mapper.Map<Post>(postCreateDto);
             return await _mediator.Send(new InsertPostCommand(postModel));
         }
-
-        /*[HttpPost]
-        public ActionResult<PostReadDto> CreatePost([FromForm] PostCreateDto postCreateDto)
-        {
-            Console.WriteLine("--> Creating Post....");
-
-            var postModel = _mapper.Map<Post>(postCreateDto);
-
-            _repository.CreatePost(postModel);
-            _repository.SaveChanges();
-
-            var postReadDto = _mapper.Map<PostReadDto>(postModel);
-
-            return CreatedAtRoute(nameof(GetPostById), new { Id = postReadDto.Id }, postReadDto);
-        }*/
     }
 }
