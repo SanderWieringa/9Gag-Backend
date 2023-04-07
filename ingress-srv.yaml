@@ -17,3 +17,10 @@ spec:
                                 name: posts-clusterip-srv
                                 port:
                                     number: 80
+                    -   path: /api/v/Post
+                        pathType: Prefix
+                        backend:
+                            service:
+                                name: votes-clusterip-srv 
+                                port: 
+                                    number: 80
