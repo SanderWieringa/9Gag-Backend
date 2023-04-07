@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+    name: posts-depl
+spec: 
+    replicas: 1
+    selector:
+        matchLabels:
+            app: postservice
+    template:
+        metadata:
+            labels:
+                app: postservice
+        spec:
+            containers:
+                -   name: postservice
+                    image: sanderwieringa/postservice:latest
+                    resources:
+                        limits:
+                            memory: 512Mi
+                            cpu: "1"
+---
+apiVersion: v1
+kind: Service
+metadata: 
+    name: posts-clusterip-srv
+spec: 
+    type: ClusterIP
+    selector: 
+        app: postservice
+    ports: 
+    -   name: postservice
+        protocol: TCP
+        port: 80
+        targetPort: 80
