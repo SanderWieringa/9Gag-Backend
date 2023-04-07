@@ -1,0 +1,5 @@
+redisOnFlashSpec:
+   enabled: true
+   flashStorageEngine: rocksdb
+   storageClassName: local-scsi
+   flashDiskSize: 100G
