@@ -1,9 +1,9 @@
-﻿using Backend.Data;
-using Backend.Models;
-using Backend.Queries;
+﻿using PostService.Data;
+using PostService.Models;
+using PostService.Queries;
 using MediatR;
 
-namespace Backend.Handlers
+namespace PostService.Handlers
 {
     public class GetPostListHandler : IRequestHandler<GetPostListQuery, IEnumerable<Post>>
     {

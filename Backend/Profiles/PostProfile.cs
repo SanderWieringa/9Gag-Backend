@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using Backend.Dtos;
-using Backend.Models;
+using PostService.Dtos;
+using PostService.Models;
 
-namespace Backend.Profiles
+namespace PostService.Profiles
 {
     public class PostProfile : Profile
     {

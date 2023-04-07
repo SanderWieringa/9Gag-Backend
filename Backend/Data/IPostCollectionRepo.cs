@@ -1,6 +1,6 @@
-﻿using Backend.Models;
+﻿using PostService.Models;
 
-namespace Backend.Data
+namespace PostService.Data
 {
     public interface IPostCollectionRepo
     {

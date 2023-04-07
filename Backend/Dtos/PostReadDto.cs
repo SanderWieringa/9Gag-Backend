@@ -1,7 +1,7 @@
-﻿using Backend.Models;
+﻿using PostService.Models;
 using System.Text.Json.Serialization;
 
-namespace Backend.Dtos
+namespace PostService.Dtos
 {
     public class PostReadDto
     {

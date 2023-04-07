@@ -1,17 +1,17 @@
 ﻿using AutoMapper;
-using Backend.Commands;
-using Backend.Data;
-using Backend.Dtos;
-using Backend.Models;
-using Backend.Queries;
+using PostService.Commands;
+using PostService.Data;
+using PostService.Dtos;
+using PostService.Models;
+using PostService.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.IO;
 using Microsoft.Extensions.Caching.Distributed;
-using Backend.Extensions;
+using PostService.Extensions;
 
-namespace Backend.Controllers
+namespace PostService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

@@ -1,7 +1,7 @@
-﻿using Backend.Models;
+﻿using PostService.Models;
 using System;
 
-namespace Backend.Data
+namespace PostService.Data
 {
     public static class PrepDb
     {

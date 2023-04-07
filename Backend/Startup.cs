@@ -11,11 +11,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using Backend.Data;
+using PostService.Data;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 
-namespace Backend
+namespace PostService
 {
     public class Startup
     {

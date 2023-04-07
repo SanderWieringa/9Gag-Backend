@@ -1,9 +1,9 @@
-﻿using Backend.Commands;
-using Backend.Data;
-using Backend.Models;
+﻿using PostService.Commands;
+using PostService.Data;
+using PostService.Models;
 using MediatR;
 
-namespace Backend.Handlers
+namespace PostService.Handlers
 {
     public class InsertPostHandler : IRequestHandler<InsertPostCommand, Post>
     {
