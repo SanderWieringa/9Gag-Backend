@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8S", "K8S", "{F50D3C82-253
 		ingress-srv.yaml = ingress-srv.yaml
 		local-pvc.yaml = local-pvc.yaml
 		mssql-post-depl.yaml = mssql-post-depl.yaml
+		mssql-vote-depl.yaml = mssql-vote-depl.yaml
 		posts-depl.yaml = posts-depl.yaml
 		rabbitmq-depl.yaml = rabbitmq-depl.yaml
 		redis-srv.yaml = redis-srv.yaml

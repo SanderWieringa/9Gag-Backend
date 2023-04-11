@@ -27,7 +27,6 @@ namespace Backend.Data
                 {
                     Console.WriteLine($"--> Could not run migrations: {e.Message}");
                 }
-
             }
 
             else 

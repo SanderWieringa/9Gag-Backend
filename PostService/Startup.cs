@@ -36,12 +36,8 @@ namespace Backend
             if (_env.IsProduction())
             {
                 Console.WriteLine("--> Using SqlServer Db");
-                Console.WriteLine("--> Attempt 1");
-                Console.WriteLine("--> Actual SqlServer Db");
                 services.AddDbContext<PostDbContext>(opt =>
                     opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));
-            /*services.AddDbContext<PostDbContext>(opt =>
-                opt.UseInMemoryDatabase("InMem"));*/
             }
             else
             {
@@ -57,7 +53,7 @@ namespace Backend
             services.AddMediatR(typeof(PostCollectionRepo).Assembly);
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Backend", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PostService", Version = "v1" });
             });
             services.AddCors(c =>
             {

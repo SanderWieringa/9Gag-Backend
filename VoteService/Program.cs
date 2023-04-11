@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using VoteService;
 
-namespace CommandService
+namespace VoteService
 {
     public class Program
     {

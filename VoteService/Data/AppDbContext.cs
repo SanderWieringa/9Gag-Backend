@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using VoteService.Models;
 
-namespace CommandService.Data
+namespace VoteService.Data
 {
     public class AppDbContext : DbContext
     {

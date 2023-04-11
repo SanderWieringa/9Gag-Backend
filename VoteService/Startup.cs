@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CommandService.Data;
+using VoteService.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,8 +37,10 @@ namespace VoteService
             if (_env.IsProduction())
             {
                 Console.WriteLine("--> Using SqlServer Db");
+                /*services.AddDbContext<AppDbContext>(opt =>
+                    opt.UseSqlServer(Configuration.GetConnectionString("VoteConn")));*/
                 services.AddDbContext<AppDbContext>(opt =>
-                    opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));
+                    opt.UseInMemoryDatabase("InMem"));
             }
             else
             {
@@ -47,7 +49,7 @@ namespace VoteService
                     opt.UseInMemoryDatabase("InMem"));
             }
 
-            services.AddScoped<IVoteRepo, VoteRepo>();
+    services.AddScoped<IVoteRepo, VoteRepo>();
             services.AddControllers();
             services.AddHostedService<MessageBusSubscriber>();
             services.AddSingleton<IEventProcessor, EventProcessor>();
@@ -55,6 +57,10 @@ namespace VoteService
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "VoteService", Version = "v1" });
+            });
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
 
             Console.WriteLine($"--> VoteService Endpoint {Configuration["VoteService"]}");
@@ -71,6 +77,8 @@ namespace VoteService
             }
 
             //app.UseHttpsRedirection();
+
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseRouting();
 

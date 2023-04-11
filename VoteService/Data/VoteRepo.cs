@@ -1,4 +1,4 @@
-﻿using CommandService.Data;
+﻿using VoteService.Data;
 using System;
 using System.ComponentModel.Design;
 using VoteService.Models;
