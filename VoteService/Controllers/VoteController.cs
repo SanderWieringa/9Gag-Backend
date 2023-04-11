@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VoteService.Data;
+using VoteService.Dtos;
+using VoteService.Models;
 
 namespace VoteService.Controllers
 {
@@ -16,6 +18,62 @@ namespace VoteService.Controllers
         {
             _mapper = mapper;
             _repo = repo;
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<VoteReadDto>> GetVotesForPost(int postId)
+        {
+            Console.WriteLine($"--> Hit GetVotesForPost: {postId}");
+
+            if (!_repo.PostExists(postId))
+            {
+                return NotFound();
+            }
+
+            var votes = _repo.GetVotesForPost(postId);
+
+            return Ok(_mapper.Map<IEnumerable<VoteReadDto>>(votes));
+        }
+
+        [HttpGet("{voteId}", Name = "GetVoteForPost")]
+        public ActionResult<VoteReadDto> GetVoteForPost(int postId, int voteId)
+        {
+            Console.WriteLine($"--> Hit GetVoteForPost: {postId} / {voteId}");
+
+            if (!_repo.PostExists(postId))
+            {
+                return NotFound();
+            }
+
+            var vote = _repo.GetVote(postId, voteId);
+
+            if (vote == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(_mapper.Map<VoteReadDto>(vote));
+        }
+
+        [HttpPost]
+        public ActionResult<VoteReadDto> CreateVoteForPost(int postId, VoteCreateDto voteDto)
+        {
+            Console.WriteLine($"--> Hit CreateVoteForPost: {postId}");
+
+            if (!_repo.PostExists(postId))
+            {
+                return NotFound();
+            }
+
+            var vote = _mapper.Map<Vote>(voteDto);
+
+            _repo.CreateVote(postId, vote);
+            _repo.SaveChanges();
+
+            var voteReadDto = _mapper.Map<VoteReadDto>(vote);
+
+            return CreatedAtRoute(nameof(GetVoteForPost),
+                new { postId, commandId = voteReadDto.Id }, voteReadDto);
         }
     }
 }

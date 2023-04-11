@@ -16,6 +16,7 @@ namespace VoteService.Data
 
         // Votes
         IEnumerable<Vote> GetVotesForPost(int postId);
+        Vote GetVote(int postId, int voteId);
         void CreateVote(int postId, Vote vote);
     }
 }

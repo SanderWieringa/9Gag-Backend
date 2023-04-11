@@ -45,6 +45,7 @@ namespace VoteService
                     opt.UseInMemoryDatabase("InMem"));
             }
 
+            services.AddScoped<IVoteRepo, VoteRepo>();
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen(c =>
