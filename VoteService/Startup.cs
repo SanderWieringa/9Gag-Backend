@@ -13,7 +13,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using VoteService.AsyncDataServices;
 using VoteService.Data;
+using VoteService.EventProcessing;
 
 namespace VoteService
 {
@@ -47,6 +49,8 @@ namespace VoteService
 
             services.AddScoped<IVoteRepo, VoteRepo>();
             services.AddControllers();
+            services.AddHostedService<MessageBusSubscriber>();
+            services.AddSingleton<IEventProcessor, EventProcessor>();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddSwaggerGen(c =>
             {

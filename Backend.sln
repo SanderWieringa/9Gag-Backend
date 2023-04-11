@@ -9,13 +9,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8S", "K8S", "{F50D3C82-253
 		local-pvc.yaml = local-pvc.yaml
 		mssql-post-depl.yaml = mssql-post-depl.yaml
 		posts-depl.yaml = posts-depl.yaml
+		rabbitmq-depl.yaml = rabbitmq-depl.yaml
 		redis-srv.yaml = redis-srv.yaml
 		votes-depl.yaml = votes-depl.yaml
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostService", "PostService\PostService.csproj", "{9AEC7174-F274-4C2F-B111-32FDA26BA069}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoteService", "VoteService\VoteService.csproj", "{DF1F5F43-6A78-44D4-B8CF-9394F900D25D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoteService", "VoteService\VoteService.csproj", "{DF1F5F43-6A78-44D4-B8CF-9394F900D25D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -44,12 +44,12 @@ namespace Backend.Data
                     //var photo = new Photo { PhotoId = 1, Photo = data };
 
 
-                    context.Posts.AddRange(
+                    /*context.Posts.AddRange(
 
-                        new Post { Id = 1, Title = "Test" }
+                        new Post { Id = 1, Title = "Test", Photo = "asdf"}
                     );
 
-                    context.SaveChanges();
+                    context.SaveChanges();*/
                 }
                 else
                 {

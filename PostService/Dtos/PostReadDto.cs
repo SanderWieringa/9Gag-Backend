@@ -9,6 +9,6 @@ namespace Backend.Dtos
 
         public string Title { get; set; }
 
-        public string Image { get; set; }
+        public string Photo { get; set; }
     }
 }

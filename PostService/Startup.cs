@@ -15,6 +15,7 @@ using Backend.Data;
 using Microsoft.EntityFrameworkCore;
 using MediatR;
 using StackExchange.Redis;
+using PostService.AsyncDataServices;
 
 namespace Backend
 {
@@ -50,6 +51,7 @@ namespace Backend
             }
 
             services.AddScoped<IPostCollectionRepo, PostCollectionRepo>();
+            services.AddSingleton<IMessageBusClient, MessageBusClient>();
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddMediatR(typeof(PostCollectionRepo).Assembly);

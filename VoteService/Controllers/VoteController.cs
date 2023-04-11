@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using VoteService.Data;
 using VoteService.Dtos;
@@ -72,8 +73,7 @@ namespace VoteService.Controllers
 
             var voteReadDto = _mapper.Map<VoteReadDto>(vote);
 
-            return CreatedAtRoute(nameof(GetVoteForPost),
-                new { postId, commandId = voteReadDto.Id }, voteReadDto);
+            return Ok(voteReadDto);
         }
     }
 }

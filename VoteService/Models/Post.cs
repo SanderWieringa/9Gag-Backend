@@ -12,6 +12,8 @@ namespace VoteService.Models
         public int ExternalId { get; set; }
         [Required]
         public string Title { get; set; }
+        [Required]
+        public string Photo { get; set; }
         public ICollection<Vote> Votes { get; set; } = new List<Vote>();
     }
 }

@@ -4,6 +4,6 @@ namespace VoteService.Dtos
 {
     public class VoteCreateDto
     {
-        
+        public int UserId { get; set; }
     }
 }

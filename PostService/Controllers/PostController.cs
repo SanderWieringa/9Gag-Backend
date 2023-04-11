@@ -10,6 +10,8 @@ using System.Collections;
 using System.IO;
 using Microsoft.Extensions.Caching.Distributed;
 using Backend.Extensions;
+using PostService.AsyncDataServices;
+using PostService.Dtos;
 
 namespace Backend.Controllers
 {
@@ -20,14 +22,17 @@ namespace Backend.Controllers
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly IDistributedCache _cache;
+        private readonly IMessageBusClient _messageBusClient;
         private IEnumerable<Post> posts;
         private string loadLocation = "";
+        
 
-        public PostController(IMapper mapper, IMediator mediator, IDistributedCache cache)
+        public PostController(IMapper mapper, IMediator mediator, IDistributedCache cache, IMessageBusClient messageBusClient)
         {
             _mapper = mapper;
             _mediator = mediator;
             _cache = cache;
+            _messageBusClient = messageBusClient;
         }
 
         [HttpGet]
@@ -70,7 +75,23 @@ namespace Backend.Controllers
         public async Task<Post> Post([FromBody] PostCreateDto postCreateDto)
         {
             var postModel = _mapper.Map<Post>(postCreateDto);
-            return await _mediator.Send(new InsertPostCommand(postModel));
+
+            Post post = await _mediator.Send(new InsertPostCommand(postModel));
+
+            var postReadDto = _mapper.Map<PostReadDto>(postModel);
+
+            // Send Async Message
+            try
+            {
+                var platformPublishedDto = _mapper.Map<PostPublishedDto>(postReadDto);
+                platformPublishedDto.Event = "Post_Published";
+                _messageBusClient.PublishNewPost(platformPublishedDto);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"--> Could not send asynchronously: {e.Message}");
+            }
+            return post;
         }
     }
 }

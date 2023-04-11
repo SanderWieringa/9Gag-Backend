@@ -24,7 +24,7 @@ namespace VoteService.EventProcessing
             switch (eventType)
             {
                 case EventType.PostPublished:
-                    AddPlatform(message);
+                    AddPost(message);
                     break;
                 default:
                     break;
@@ -48,7 +48,7 @@ namespace VoteService.EventProcessing
             }
         }
 
-        private void AddPlatform(string postPublishedMessage)
+        private void AddPost(string postPublishedMessage)
         {
             using (var scope = _scopeFactory.CreateScope())
             {
