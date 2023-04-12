@@ -5,7 +5,7 @@
 namespace VoteService.Migrations
 {
     /// <inheritdoc />
-    public partial class test6migration : Migration
+    public partial class finalMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

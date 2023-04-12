@@ -21,6 +21,6 @@ spec:
                         pathType: Prefix
                         backend:
                             service:
-                                name: votes-clusterip-srv 
+                                name: votes-clusterip-srv
                                 port: 
                                     number: 80

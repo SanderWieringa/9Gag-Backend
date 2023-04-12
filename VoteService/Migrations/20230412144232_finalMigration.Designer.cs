@@ -11,8 +11,8 @@ using VoteService.Data;
 namespace VoteService.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230411174145_test7migration")]
-    partial class test7migration
+    [Migration("20230412144232_finalMigration")]
+    partial class finalMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

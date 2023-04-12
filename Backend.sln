@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8S", "K8S", "{F50D3C82-2530-4196-B67A-66B611378F9E}"
 	ProjectSection(SolutionItems) = preProject
 		ingress-srv.yaml = ingress-srv.yaml
+		local-pvc-vote.yaml = local-pvc-vote.yaml
 		local-pvc.yaml = local-pvc.yaml
 		mssql-post-depl.yaml = mssql-post-depl.yaml
 		mssql-vote-depl.yaml = mssql-vote-depl.yaml
