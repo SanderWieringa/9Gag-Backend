@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Backend
+namespace PostService
 {
     public class EverythingToStringJsonConverter : JsonConverter<string>
     {

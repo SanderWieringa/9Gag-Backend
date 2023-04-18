@@ -1,23 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using PostService.Data;
+﻿using AuthorizationService.Data;
 using Microsoft.EntityFrameworkCore;
-using MediatR;
-using StackExchange.Redis;
-using PostService.AsyncDataServices;
+using Microsoft.OpenApi.Models;
+using System;
 
-namespace PostService
+namespace AuthorizationService
 {
     public class Startup
     {
@@ -36,33 +22,29 @@ namespace PostService
             if (_env.IsProduction())
             {
                 Console.WriteLine("--> Using SqlServer Db");
-                services.AddDbContext<PostDbContext>(opt =>
-                    opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));
+                services.AddDbContext<AppDbContext>(opt =>
+                    opt.UseSqlServer(Configuration.GetConnectionString("UserConn")));
             }
             else
             {
                 Console.WriteLine("--> Using InMem Db");
-                services.AddDbContext<PostDbContext>(opt =>
+                services.AddDbContext<AppDbContext>(opt =>
                     opt.UseInMemoryDatabase("InMem"));
             }
 
-            services.AddScoped<IPostCollectionRepo, PostCollectionRepo>();
-            services.AddSingleton<IMessageBusClient, MessageBusClient>();
             services.AddControllers();
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            services.AddMediatR(typeof(PostCollectionRepo).Assembly);
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PostService", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AuthorizationService", Version = "v1" });
             });
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
-            services.AddStackExchangeRedisCache(options =>
+            services.AddAuthentication().AddGoogle(googleOptions =>
             {
-                options.Configuration = Configuration.GetConnectionString("Redis");
-                options.InstanceName = "Post_";
+                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
             });
         }
 
@@ -89,7 +71,7 @@ namespace PostService
                 endpoints.MapControllers();
             });
 
-            PrepDb.PrepPopulation(app, env.IsProduction());
+            //PrepDb.PrepPopulation(app, env.IsProduction());
         }
     }
 }

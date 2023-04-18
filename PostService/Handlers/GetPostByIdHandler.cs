@@ -1,8 +1,8 @@
-﻿using Backend.Models;
-using Backend.Queries;
+﻿using PostService.Models;
+using PostService.Queries;
 using MediatR;
 
-namespace Backend.Handlers
+namespace PostService.Handlers
 {
     public class GetPostByIdHandler : IRequestHandler<GetPostByIdQuery, Post>
     {

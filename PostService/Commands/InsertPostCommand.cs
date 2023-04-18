@@ -1,7 +1,7 @@
-﻿using Backend.Models;
+﻿using PostService.Models;
 using MediatR;
 
-namespace Backend.Commands
+namespace PostService.Commands
 {
    public record InsertPostCommand(Post post) : IRequest<Post>;
 }

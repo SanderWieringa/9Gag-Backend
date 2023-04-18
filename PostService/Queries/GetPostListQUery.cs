@@ -1,7 +1,7 @@
-﻿using Backend.Models;
+﻿using PostService.Models;
 using MediatR;
 
-namespace Backend.Queries
+namespace PostService.Queries
 {
     public record GetPostListQuery() : IRequest<IEnumerable<Post>>;
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 
-namespace Backend.Extensions
+namespace PostService.Extensions
 {
     public static class DistributedCacheExtensions
     {

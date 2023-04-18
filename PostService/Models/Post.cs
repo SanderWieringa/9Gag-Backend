@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Text.Json.Serialization;
 
-namespace Backend.Models
+namespace PostService.Models
 {
 
     public class Post

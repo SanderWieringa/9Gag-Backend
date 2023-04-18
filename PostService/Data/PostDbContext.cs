@@ -1,9 +1,9 @@
-﻿using Backend.Models;
+﻿using PostService.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Reflection.Metadata;
 
-namespace Backend.Data
+namespace PostService.Data
 {
     public class PostDbContext : DbContext
     {

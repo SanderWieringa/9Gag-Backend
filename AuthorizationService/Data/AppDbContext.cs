@@ -1,0 +1,15 @@
+﻿using AuthorizationService.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace AuthorizationService.Data
+{
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> opt) : base(opt)
+        {
+            
+        }
+
+        public User Users { get; set; }
+    }
+}
