@@ -20,7 +20,7 @@ namespace AuthorizationService.Controllers
             {
                 var googleUser = await GoogleJsonWebSignature.ValidateAsync(token, new GoogleJsonWebSignature.ValidationSettings()
                 {
-                    Audience = new[] { "529825921685-048hgv1dpce1uadc118pgfcak28u8n3a.apps.googleusercontent.com" }
+                    Audience = new[] { "86108609563-g3elr6e4kbqiqv677nuu1kltsul1sb0j.apps.googleusercontent.com" }
                 });
 
                 return Ok();
