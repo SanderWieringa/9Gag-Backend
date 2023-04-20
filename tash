@@ -1,0 +1,111 @@
+[1mdiff --git a/.vs/Backend/DesignTimeBuild/.dtbcache.v2 b/.vs/Backend/DesignTimeBuild/.dtbcache.v2[m
+[1mindex 6fb0b7a..8723b57 100644[m
+Binary files a/.vs/Backend/DesignTimeBuild/.dtbcache.v2 and b/.vs/Backend/DesignTimeBuild/.dtbcache.v2 differ
+[1mdiff --git a/AuthorizationService/AuthorizationService.csproj b/AuthorizationService/AuthorizationService.csproj[m
+[1mindex 79fef07..100789e 100644[m
+[1m--- a/AuthorizationService/AuthorizationService.csproj[m
+[1m+++ b/AuthorizationService/AuthorizationService.csproj[m
+[36m@@ -11,6 +11,7 @@[m
+   <ItemGroup>[m
+     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />[m
+     <PackageReference Include="Google.Apis.Auth" Version="1.60.0" />[m
+[32m+[m[32m    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />[m
+     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="7.0.5" />[m
+     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.3" />[m
+     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />[m
+[1mdiff --git a/AuthorizationService/Controllers/GoogleAuthController.cs b/AuthorizationService/Controllers/GoogleAuthController.cs[m
+[1mindex 30aeb2c..23c6978 100644[m
+[1m--- a/AuthorizationService/Controllers/GoogleAuthController.cs[m
+[1m+++ b/AuthorizationService/Controllers/GoogleAuthController.cs[m
+[36m@@ -1,9 +1,13 @@[m
+ ﻿using Google.Apis.Auth;[m
+[32m+[m[32musing Microsoft.AspNetCore.Authentication;[m
+[32m+[m[32musing Microsoft.AspNetCore.Authentication.Google;[m
+ using Microsoft.AspNetCore.Authorization;[m
+ using Microsoft.AspNetCore.Mvc;[m
+ [m
+ namespace AuthorizationService.Controllers[m
+ {[m
+[32m+[m[32m    [ApiController][m
+[32m+[m[32m    [AllowAnonymous][m
+     public class GoogleAuthController : ControllerBase[m
+     {[m
+         public GoogleAuthController()[m
+[36m@@ -11,7 +15,24 @@[m [mnamespace AuthorizationService.Controllers[m
+ [m
+         }[m
+ [m
+[31m-        [HttpPost][m
+[32m+[m[32m        [HttpGet("{id}")][m
+[32m+[m[32m        [Authorize][m
+[32m+[m[32m        public ActionResult<string> Get(int id)[m
+[32m+[m[32m        {[m
+[32m+[m[32m            return this.User.Identity.Name;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        [Route("authenticate")][m
+[32m+[m[32m        [ProducesResponseType(StatusCodes.Status200OK)][m
+[32m+[m[32m        [ProducesResponseType(StatusCodes.Status500InternalServerError)][m
+[32m+[m[32m        public async Task<IActionResult> Register()[m
+[32m+[m[32m        {[m
+[32m+[m[32m            if (!ModelState.IsValid) return BadRequest();[m
+[32m+[m[32m            var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };[m
+[32m+[m[32m            return Challenge(properties, GoogleDefaults.AuthenticationScheme);[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        /*[HttpPost][m
+         [AllowAnonymous][m
+         [Route("test/{token}")][m
+         public async Task<IActionResult> Test([FromRoute] string token)[m
+[36m@@ -29,6 +50,6 @@[m [mnamespace AuthorizationService.Controllers[m
+             {[m
+                 return BadRequest();[m
+             }[m
+[31m-        }[m
+[32m+[m[32m        }*/[m
+     }[m
+ }[m
+[1mdiff --git a/AuthorizationService/Startup.cs b/AuthorizationService/Startup.cs[m
+[1mindex 2a5a7de..d208f2e 100644[m
+[1m--- a/AuthorizationService/Startup.cs[m
+[1m+++ b/AuthorizationService/Startup.cs[m
+[36m@@ -1,4 +1,6 @@[m
+ ﻿using AuthorizationService.Data;[m
+[32m+[m[32musing Google;[m
+[32m+[m[32musing Microsoft.AspNetCore.Identity;[m
+ using Microsoft.EntityFrameworkCore;[m
+ using Microsoft.OpenApi.Models;[m
+ using System;[m
+[36m@@ -41,10 +43,20 @@[m [mnamespace AuthorizationService[m
+             {[m
+                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());[m
+             });[m
+[31m-            services.AddAuthentication().AddGoogle(googleOptions =>[m
+[32m+[m[32m            services.AddDbContext<AppDbContext>();[m
+[32m+[m[32m            /*services.AddIdentity<IdentityUser, IdentityRole>()[m
+[32m+[m[32m            // services.AddDefaultIdentity<IdentityUser>()[m
+[32m+[m[32m           .AddUserStore<AppDbContext>()[m
+[32m+[m[32m           .AddDefaultTokenProviders();[m
+[32m+[m[32m            *//*services.AddIdentity<IdentityUser, IdentityRole>()[m
+[32m+[m[32m                            .AddUserStore<AppDbContext>()[m
+[32m+[m[32m                            .AddDefaultTokenProviders();*/[m
+[32m+[m[32m            services.AddAuthentication().AddGoogle(options =>[m
+             {[m
+[31m-                googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];[m
+[31m-                googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];[m
+[32m+[m[32m                IConfigurationSection googleAuthNSection = Configuration.GetSection("Authentication:Google");[m
+[32m+[m[32m                options.ClientId = googleAuthNSection["ClientId"];[m
+[32m+[m[32m                options.ClientSecret = googleAuthNSection["ClientSecret"];[m
+[32m+[m[32m                Console.WriteLine("--> options.ClientId: ", options.ClientId);[m
+             });[m
+         }[m
+ [m
+[36m@@ -64,6 +76,8 @@[m [mnamespace AuthorizationService[m
+ [m
+             app.UseRouting();[m
+ [m
+[32m+[m[32m            app.UseAuthentication();[m
+[32m+[m
+             app.UseAuthorization();[m
+ [m
+             app.UseEndpoints(endpoints =>[m
