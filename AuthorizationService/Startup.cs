@@ -1,4 +1,5 @@
 ﻿using AuthorizationService.Data;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using System;
@@ -32,6 +33,7 @@ namespace AuthorizationService
                     opt.UseInMemoryDatabase("InMem"));
             }
 
+            services.AddScoped<IAuthService, CaAuthorizationService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -41,7 +43,12 @@ namespace AuthorizationService
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
-            services.AddAuthentication().AddGoogle(googleOptions =>
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
+                options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+            }).AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
