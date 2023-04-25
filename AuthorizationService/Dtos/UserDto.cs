@@ -11,8 +11,8 @@ namespace AuthorizationService.Dtos
         {
             UserDto user = new UserDto()
             {
-                Name = u.Name,
-                Email = u.Email
+                Name = u.name,
+                Email = u.email
             };
             return user;
         }

@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using AuthorizationService.Models;
+using Microsoft.AspNetCore.Authentication;
+using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace AuthorizationService.Data
 {
     public interface IAuthService
     {
-        Task<string> AuthorizeAsync(AuthenticateResult authResult);
-        Task<bool> CheckAccountExistsAsync(string email);
+        Task<User> Authenticate(Payload payload);
+
+        /*Task<string> AuthorizeAsync(AuthenticateResult authResult);
+        Task<bool> CheckAccountExistsAsync(string email);*/
     }
 }

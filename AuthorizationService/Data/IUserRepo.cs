@@ -2,11 +2,10 @@
 
 namespace AuthorizationService.Data
 {
-    public interface IAuthorizationContext
+    public interface IUserRepo
     {
         IEnumerable<User> GetAllUsers();
         void CreateUser(User user);
-        Task<int> SaveChangesAsync();
-        
+        bool SaveChanges();
     }
 }

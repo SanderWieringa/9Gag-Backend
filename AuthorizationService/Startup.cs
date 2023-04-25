@@ -1,8 +1,11 @@
 ﻿using AuthorizationService.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.Text;
 
 namespace AuthorizationService
 {
@@ -33,6 +36,7 @@ namespace AuthorizationService
                     opt.UseInMemoryDatabase("InMem"));
             }
 
+            services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IAuthService, CaAuthorizationService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -45,6 +49,7 @@ namespace AuthorizationService
             });
             services.AddAuthentication(options =>
             {
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultChallengeScheme = IdentityConstants.ApplicationScheme;
                 options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
@@ -52,6 +57,22 @@ namespace AuthorizationService
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            }).AddCookie(options =>
+            {
+                options.LoginPath = "/api/GoogleAuth/google-response";
+            })
+            .AddJwtBearer(cfg =>
+            {
+                cfg.RequireHttpsMetadata = false;
+                cfg.SaveToken = true;
+
+                cfg.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AppSettings:JwtSecret"])),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
             });
         }
 

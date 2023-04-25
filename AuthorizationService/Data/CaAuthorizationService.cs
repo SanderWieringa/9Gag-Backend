@@ -1,12 +1,49 @@
 ﻿using AuthorizationService.Dtos;
 using AuthorizationService.Models;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication;
+using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace AuthorizationService.Data
 {
     public class CaAuthorizationService : IAuthService
     {
-        private readonly IAuthorizationContext authorizationContext;
+        private readonly IUserRepo _repo;
+
+        public CaAuthorizationService(IUserRepo repo)
+        {
+            _repo = repo;
+        }
+
+        public async Task<User> Authenticate(Payload payload)
+        {
+            return FindUserOrAdd(payload);
+        }
+
+        private User FindUserOrAdd(Payload payload)
+        {
+            var u = _repo.GetAllUsers().Where(x => x.email == payload.Email).FirstOrDefault();
+            if (u == null)
+            {
+                u = new User()
+                {
+                    id = Guid.NewGuid(),
+                    name = payload.Name,
+                    email = payload.Email,
+                    oauthSubject = payload.Subject,
+                    oauthIssuer = payload.Issuer
+                };
+                _repo.CreateUser(u);
+                _repo.SaveChanges();
+            }
+            return u;
+        }
+
+
+
+
+
+        /*private readonly IAuthorizationContext authorizationContext;
 
         public async Task<string> AuthorizeAsync(AuthenticateResult authResult)
         {
@@ -58,6 +95,6 @@ namespace AuthorizationService.Data
                 throw new InvalidOperationException("Something went wrong trying to create the account");
             }
             return true;
-        }
+        }*/
     }
 }
