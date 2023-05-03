@@ -28,23 +28,6 @@ namespace AuthorizationService.Controllers
         }
 
         [HttpPost]
-        [Route("signup")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Verify([FromBody] RegisterRequest request)
-        {
-            Console.WriteLine("request: ", request.Credential.ToString());
-            string token = request.Credential;
-            var payload = await VerifyGoogleTokenId(token);
-            if (payload == null)
-            {
-                return BadRequest("Invalid token");
-            }
-            //return Challenge(payload.ToString(), GoogleDefaults.AuthenticationScheme);
-            return Ok(payload);
-        }
-
-        [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         [Route("google-response")]
@@ -79,65 +62,16 @@ namespace AuthorizationService.Controllers
         {
             try
             {
-                // uncomment these lines if you want to add settings: 
-                // var validationSettings = new GoogleJsonWebSignature.ValidationSettings
-                // { 
-                //     Audience = new string[] { "yourServerClientIdFromGoogleConsole.apps.googleusercontent.com" }
-                // };
-                // Add your settings and then get the payload
-                // GoogleJsonWebSignature.Payload payload =  await GoogleJsonWebSignature.ValidateAsync(token, validationSettings);
-
-                // Or Get the payload without settings.
                 GoogleJsonWebSignature.Payload payload = await GoogleJsonWebSignature.ValidateAsync(token);
 
                 return payload;
             }
-            catch (System.Exception)
+            catch (Exception)
             {
                 Console.WriteLine("invalid google token");
 
             }
             return null;
         }
-
-        /*[HttpPost]
-        [Route("signup")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> Register()
-        {
-        *//*
-        1. VerifyGoogleToken
-        2. push DB
-        3. sign jwt
-         */
-
-        /*if (!ModelState.IsValid) return BadRequest();
-        var properties = new AuthenticationProperties { RedirectUri = Url.Action("GoogleResponse") };
-        return Challenge(properties, GoogleDefaults.AuthenticationScheme);*//*
-        return default;
-    }*/
-
-        
-
-        /*[HttpPost]
-        [AllowAnonymous]
-        [Route("test/{token}")]
-        public async Task<IActionResult> Test([FromRoute] string token)
-        {
-            try
-            {
-                var googleUser = await GoogleJsonWebSignature.ValidateAsync(token, new GoogleJsonWebSignature.ValidationSettings()
-                {
-                    Audience = new[] { "86108609563-g3elr6e4kbqiqv677nuu1kltsul1sb0j.apps.googleusercontent.com" }
-                });
-
-                return Ok();
-            }
-            catch (Exception)
-            {
-                return BadRequest();
-            }
-        }*/
     }
 }

@@ -20,7 +20,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostService", "PostService\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoteService", "VoteService\VoteService.csproj", "{DF1F5F43-6A78-44D4-B8CF-9394F900D25D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationService", "AuthorizationService\AuthorizationService.csproj", "{64A34D78-2991-425D-9EE6-44F599B8C135}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationService", "AuthorizationService\AuthorizationService.csproj", "{64A34D78-2991-425D-9EE6-44F599B8C135}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{F70E916F-7E15-4393-BA2F-C16EE7A478E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,6 +42,10 @@ Global
 		{64A34D78-2991-425D-9EE6-44F599B8C135}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64A34D78-2991-425D-9EE6-44F599B8C135}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64A34D78-2991-425D-9EE6-44F599B8C135}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F70E916F-7E15-4393-BA2F-C16EE7A478E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F70E916F-7E15-4393-BA2F-C16EE7A478E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F70E916F-7E15-4393-BA2F-C16EE7A478E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F70E916F-7E15-4393-BA2F-C16EE7A478E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
