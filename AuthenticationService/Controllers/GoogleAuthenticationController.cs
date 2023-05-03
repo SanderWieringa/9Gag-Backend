@@ -7,9 +7,9 @@ namespace AuthenticationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GoogleAuthController : ControllerBase
+    public class GoogleAuthenticationController : ControllerBase
     {
-        public GoogleAuthController()
+        public GoogleAuthenticationController()
         {
         }
 

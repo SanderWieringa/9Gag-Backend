@@ -24,3 +24,17 @@ spec:
                                 name: votes-clusterip-srv
                                 port: 
                                     number: 80
+                    -   path: /api/GoogleAuthentication
+                        pathType: Prefix
+                        backend: 
+                            service: 
+                                name: authentication-clusterip-srv
+                                port:
+                                    number: 80
+                    -   path: /api/GoogleAuthorization
+                        pathType: Prefix
+                        backend: 
+                            service: 
+                                name: authorization-clusterip-srv
+                                port:
+                                    number: 80

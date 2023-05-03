@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+    name: authorization-depl
+spec: 
+    replicas: 1
+    selector:
+        matchLabels:
+            app: authorizationservice
+    template:
+        metadata:
+            labels:
+                app: authorizationservice
+        spec:
+            containers:
+                -   name: authorizationservice
+                    image: sanderwieringa/authorizationservice:latest
+                    resources:
+                        limits:
+                            memory: 512Mi
+                            cpu: "1"
+---
+apiVersion: v1
+kind: Service
+metadata: 
+    name: authorization-clusterip-srv
+spec: 
+    type: ClusterIP
+    selector: 
+        app: authorizationservice
+    ports: 
+    -   name: authorizationservice
+        protocol: TCP
+        port: 80
+        targetPort: 80
