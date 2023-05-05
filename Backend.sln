@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.33414.496
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8S", "K8S", "{F50D3C82-2530-4196-B67A-66B611378F9E}"
 	ProjectSection(SolutionItems) = preProject
+		authentication-depl.yaml = authentication-depl.yaml
+		authorization-depl.yaml = authorization-depl.yaml
 		ingress-srv.yaml = ingress-srv.yaml
 		local-pvc-vote.yaml = local-pvc-vote.yaml
 		local-pvc.yaml = local-pvc.yaml
@@ -22,7 +24,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoteService", "VoteService\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationService", "AuthorizationService\AuthorizationService.csproj", "{64A34D78-2991-425D-9EE6-44F599B8C135}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{F70E916F-7E15-4393-BA2F-C16EE7A478E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{F70E916F-7E15-4393-BA2F-C16EE7A478E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

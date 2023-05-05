@@ -16,15 +16,34 @@ namespace AuthorizationService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class GoogleAuthController : ControllerBase
+    public class GoogleAuthorizationController : ControllerBase
     {
         private readonly IConfiguration _configuration;
         private readonly IAuthService _authService;
 
-        public GoogleAuthController(IAuthService authService, IConfiguration configuration)
+        public GoogleAuthorizationController(IAuthService authService, IConfiguration configuration)
         {
             _configuration = configuration;
             _authService = authService;
+        }
+
+        [HttpPost]
+        [Route("signup")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> Verify([FromBody] RegisterRequest request)
+        {
+            Console.WriteLine("request: ", request.Credential.ToString());
+            string token = request.Credential;
+            var payload = await VerifyGoogleTokenId(token);
+            if (payload != null)
+            {
+                await _authService.Authenticate(payload);
+
+                return Ok(payload);
+            }
+
+            return BadRequest("Invalid token");
         }
 
         [HttpPost]
