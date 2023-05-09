@@ -19,10 +19,10 @@ jobs:
           dotnet-version: '7.0.x'
 
       - name: Restore
-        run: dotnet restore ./PostService.sln
+        run: dotnet restore ./PostService/PostService.sln
 
       - name: Build
-        run: dotnet build ./PostService.sln --configuration Release --no-restore
+        run: dotnet build ./PostService/PostService.sln --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish ./PostService.sln --configuration Release --no-build
+        run: dotnet publish ./PostService/PostService.sln --configuration Release --no-build
