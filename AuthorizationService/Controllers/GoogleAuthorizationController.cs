@@ -20,6 +20,7 @@ namespace AuthorizationService.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IAuthService _authService;
+        // test
 
         public GoogleAuthorizationController(IAuthService authService, IConfiguration configuration)
         {
