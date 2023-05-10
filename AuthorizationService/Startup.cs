@@ -26,8 +26,10 @@ namespace AuthorizationService
             if (_env.IsProduction())
             {
                 Console.WriteLine("--> Using SqlServer Db");
+                /*services.AddDbContext<AppDbContext>(opt =>
+                    opt.UseSqlServer(Configuration.GetConnectionString("UserConn")));*/
                 services.AddDbContext<AppDbContext>(opt =>
-                    opt.UseSqlServer(Configuration.GetConnectionString("UserConn")));
+                    opt.UseInMemoryDatabase("InMem"));
             }
             else
             {
