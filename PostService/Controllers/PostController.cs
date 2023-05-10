@@ -25,6 +25,7 @@ namespace PostService.Controllers
         private readonly IMessageBusClient _messageBusClient;
         private IEnumerable<Post> posts;
         private string loadLocation = "";
+        // fix 1
         
 
         public PostController(IMapper mapper, IMediator mediator, IDistributedCache cache, IMessageBusClient messageBusClient)
