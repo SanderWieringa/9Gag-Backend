@@ -45,27 +45,26 @@ namespace PostService.Controllers
             string recordKey = "Post_" + DateTime.Now.ToString("yyyyMMdd_hhmm");
             try {
                 posts = await _cache.GetRecordAsync<IEnumerable<Post>>(recordKey);
+
+                if (posts == null)
+                {
+                    posts = await _mediator.Send(new GetPostListQuery());
+
+                    loadLocation = $"Loaded from API at: {DateTime.Now}";
+                    Console.WriteLine("loadLocation = Database");
+                    Thread.Sleep(3000);
+
+                    await _cache.SetRecordAsync(recordKey, posts);
+                }
+                else
+                {
+                    loadLocation = $"Loaded from the cache at: {DateTime.Now}";
+                    Console.WriteLine("loadLocation = Cache");
+                }
             }
             catch(Exception e) {
                 Console.WriteLine(e.Message);
             }
-
-            if (posts == null)
-            {
-                posts = await _mediator.Send(new GetPostListQuery());
-
-                loadLocation = $"Loaded from API at: {DateTime.Now}";
-                Console.WriteLine("loadLocation = Database");
-                Thread.Sleep(3000);
-
-                await _cache.SetRecordAsync(recordKey, posts);
-            }
-            else
-            {
-                loadLocation = $"Loaded from the cache at: {DateTime.Now}";
-                Console.WriteLine("loadLocation = Cache");
-            }
-            
 
             return posts;
         }
