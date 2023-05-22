@@ -61,6 +61,7 @@ namespace VoteService.AsyncDataServices
             _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
 
             return Task.CompletedTask;
+
         }
 
         public override void Dispose()

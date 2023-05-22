@@ -35,15 +35,29 @@ namespace PostService
         {
             if (_env.IsProduction())
             {
-                Console.WriteLine("--> Using SqlServer Db");
-                services.AddDbContext<PostDbContext>(opt =>
-                    opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));
+                try
+                {
+                    Console.WriteLine("--> Using SqlServer Db");
+                    services.AddDbContext<PostDbContext>(opt =>
+                        opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             else
             {
-                Console.WriteLine("--> Using InMem Db");
-                services.AddDbContext<PostDbContext>(opt =>
-                    opt.UseInMemoryDatabase("InMem"));
+                try
+                {
+                    Console.WriteLine("--> Using InMem Db");
+                    services.AddDbContext<PostDbContext>(opt =>
+                        opt.UseInMemoryDatabase("InMem"));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
 
             services.AddScoped<IPostCollectionRepo, PostCollectionRepo>();
@@ -59,11 +73,18 @@ namespace PostService
             {
                 c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             });
-            services.AddStackExchangeRedisCache(options =>
+            try
             {
-                options.Configuration = Configuration.GetConnectionString("Redis");
-                options.InstanceName = "Post_";
-            });
+                services.AddStackExchangeRedisCache(options =>
+                {
+                    options.Configuration = Configuration.GetConnectionString("Redis");
+                    options.InstanceName = "Post_";
+                });
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
