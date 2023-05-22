@@ -43,8 +43,12 @@ namespace PostService.Controllers
             loadLocation = null;
 
             string recordKey = "Post_" + DateTime.Now.ToString("yyyyMMdd_hhmm");
-
-            posts = await _cache.GetRecordAsync<IEnumerable<Post>>(recordKey);
+            try {
+                posts = await _cache.GetRecordAsync<IEnumerable<Post>>(recordKey);
+            }
+            catch(Exception e) {
+                Console.WriteLine(e.Message);
+            }
 
             if (posts == null)
             {
