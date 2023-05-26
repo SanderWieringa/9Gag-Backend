@@ -38,7 +38,7 @@ namespace PostService
                 try
                 {
                     Console.WriteLine("--> Using SqlServer Db");
-                    Console.WriteLine("--> NEW");
+                    Console.WriteLine("--> NEW1");
                     /*services.AddDbContext<PostDbContext>(opt =>
                         opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));*/
                     services.AddDbContext<PostDbContext>(opt =>
