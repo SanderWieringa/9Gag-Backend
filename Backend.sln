@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8S", "K8S", "{F50D3C82-253
 		authentication-depl.yaml = authentication-depl.yaml
 		authorization-depl.yaml = authorization-depl.yaml
 		ingress-srv.yaml = ingress-srv.yaml
+		loadBalancer.yaml = loadBalancer.yaml
 		local-pvc-vote.yaml = local-pvc-vote.yaml
 		local-pvc.yaml = local-pvc.yaml
 		mongodb-depl.yaml = mongodb-depl.yaml

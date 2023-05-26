@@ -38,8 +38,11 @@ namespace PostService
                 try
                 {
                     Console.WriteLine("--> Using SqlServer Db");
+                    Console.WriteLine("--> NEW");
+                    /*services.AddDbContext<PostDbContext>(opt =>
+                        opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));*/
                     services.AddDbContext<PostDbContext>(opt =>
-                        opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));
+                        opt.UseInMemoryDatabase("InMem"));
                 }
                 catch(Exception e)
                 {
