@@ -3,16 +3,26 @@ using System;
 using System.ComponentModel.Design;
 using VoteService.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
+using MongoDB.Driver;
+using MongoDB.Bson;
 
 namespace VoteService.Data
 {
     public class VoteRepo : IVoteRepo
     {
-        private readonly AppDbContext _context;
+        private readonly IMongoCollection<Vote> _votes;
+        private readonly IMongoCollection<Post> _posts;
 
-        public VoteRepo(AppDbContext context)
+        /*private readonly AppDbContext _context;*/
+
+        public VoteRepo(IDatabaseSettings settings, IMongoClient mongoClient /*AppDbContext context*/)
         {
-            _context = context;
+            /*_context = context;*/
+            var voteDatabase = mongoClient.GetDatabase(settings.VoteDatabaseName);
+            _votes = voteDatabase.GetCollection<Vote>(settings.VoteCollectionName);
+
+            var postDatabase = mongoClient.GetDatabase(settings.PostDatabaseName);
+            _posts = postDatabase.GetCollection<Post>(settings.PostCollectionName);
         }
 
         public void CreatePost(Post post)
@@ -21,10 +31,10 @@ namespace VoteService.Data
             {
                 throw new ArgumentNullException(nameof(post));
             }
-            _context.Posts.Add(post);
+            _posts.InsertOne(post);
         }
 
-        public void CreateVote(int postId, Vote vote)
+        public void CreateVote(ObjectId postId, Vote vote)
         {
             if (vote == null)
             {
@@ -32,39 +42,55 @@ namespace VoteService.Data
             }
 
             vote.PostId = postId;
-            _context.Votes.Add(vote);
+            _votes.InsertOne(vote);
         }
 
-        public bool ExternalPostExists(int externalPostId)
+        public bool ExternalPostExists(ObjectId externalPostId)
         {
-            return _context.Posts.Any(p => p.ExternalId == externalPostId);
+            var externalPostExists = _posts.Find(post => post.ExternalId == externalPostId).FirstOrDefault();
+            if (externalPostExists != null)
+            {
+                return true;
+            }
+            return false;
+
+            //return _context.Posts.Any(p => p.ExternalId == externalPostId);
         }
 
         public IEnumerable<Post> GetAllPosts()
         {
-            return _context.Posts.ToList();
+            return _posts.Find(post => true).ToList();
         }
 
-        public Vote GetVote(int postId, int voteId)
+        public Vote GetVote(ObjectId postId, ObjectId voteId)
         {
-            return _context.Votes
-                .Where(v => v.PostId == postId && v.Id == voteId).FirstOrDefault();
+            return _votes.Find(v => v.PostId == postId && v.Id == voteId).FirstOrDefault();
+
+            //return _context.Votes.Where(v => v.PostId == postId && v.Id == voteId).FirstOrDefault();
         }
 
-        public IEnumerable<Vote> GetVotesForPost(int postId)
+        public IEnumerable<Vote> GetVotesForPost(ObjectId postId)
         {
-            return _context.Votes
-                .Where(v => v.PostId == postId);
+            //return _context.Votes.Where(v => v.PostId == postId);
+
+            return _votes.Find(v => v.PostId == postId).ToList();
         }
 
-        public bool PostExists(int postId)
+        public bool PostExists(ObjectId postId)
         {
-            return _context.Posts.Any(p => p.Id == postId);
+            var postExists = _posts.Find(p => p.Id == postId);
+            if (postExists != null)
+            {
+                return true;
+            }
+            return false;
+
+            //return _context.Posts.Any(p => p.Id == postId);
         }
 
-        public bool SaveChanges()
+        /*public bool SaveChanges()
         {
             return (_context.SaveChanges() >= 0);
-        }
+        }*/
     }
 }

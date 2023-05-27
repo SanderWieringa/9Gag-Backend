@@ -12,6 +12,7 @@ using Microsoft.Extensions.Caching.Distributed;
 using PostService.Extensions;
 using PostService.AsyncDataServices;
 using PostService.Dtos;
+using MongoDB.Bson;
 
 namespace PostService.Controllers
 {
@@ -70,7 +71,7 @@ namespace PostService.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<Post> Get(int id)
+        public async Task<Post> Get(ObjectId id)
         {
             return await _mediator.Send(new GetPostByIdQuery(id));
         }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using MongoDB.Bson;
 using VoteService.Data;
 using VoteService.Dtos;
 using VoteService.Models;
@@ -22,7 +23,7 @@ namespace VoteService.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<VoteReadDto>> GetVotesForPost(int postId)
+        public ActionResult<IEnumerable<VoteReadDto>> GetVotesForPost(ObjectId postId)
         {
             Console.WriteLine($"--> Hit GetVotesForPost: {postId}");
 
@@ -37,7 +38,7 @@ namespace VoteService.Controllers
         }
 
         [HttpGet("{voteId}", Name = "GetVoteForPost")]
-        public ActionResult<VoteReadDto> GetVoteForPost(int postId, int voteId)
+        public ActionResult<VoteReadDto> GetVoteForPost(ObjectId postId, ObjectId voteId)
         {
             Console.WriteLine($"--> Hit GetVoteForPost: {postId} / {voteId}");
 
@@ -57,7 +58,7 @@ namespace VoteService.Controllers
         }
 
         [HttpPost]
-        public ActionResult<VoteReadDto> CreateVoteForPost(int postId, VoteCreateDto voteDto)
+        public ActionResult<VoteReadDto> CreateVoteForPost(ObjectId postId, VoteCreateDto voteDto)
         {
             Console.WriteLine($"--> Hit CreateVoteForPost: {postId}");
 
@@ -69,7 +70,7 @@ namespace VoteService.Controllers
             var vote = _mapper.Map<Vote>(voteDto);
 
             _repo.CreateVote(postId, vote);
-            _repo.SaveChanges();
+            /*_repo.SaveChanges();*/
 
             var voteReadDto = _mapper.Map<VoteReadDto>(vote);
 

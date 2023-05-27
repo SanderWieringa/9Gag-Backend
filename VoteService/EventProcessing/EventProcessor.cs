@@ -62,7 +62,7 @@ namespace VoteService.EventProcessing
                     if (!repo.ExternalPostExists(post.ExternalId))
                     {
                         repo.CreatePost(post);
-                        repo.SaveChanges();
+                        /*repo.SaveChanges();*/
                         Console.WriteLine("--> Post added...");
                     }
                 }

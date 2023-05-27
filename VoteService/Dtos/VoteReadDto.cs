@@ -1,9 +1,11 @@
-﻿namespace VoteService.Dtos
+﻿using MongoDB.Bson;
+
+namespace VoteService.Dtos
 {
     public class VoteReadDto
     {
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public int PostId { get; set; }
+        public ObjectId Id { get; set; }
+        public ObjectId UserId { get; set; }
+        public ObjectId PostId { get; set; }
     }
 }

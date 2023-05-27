@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson.Serialization.Attributes;
+using MongoDB.Bson;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -9,11 +11,11 @@ namespace PostService.Models
 
     public class Post
     {
-        [Key]
-        public int Id { get; set; }
-
+        [BsonId]
+        public ObjectId Id { get; set; }
+        [BsonElement("title")]
         public string Title { get; set; }
-
+        [BsonElement("photo")]
         public string Photo { get; set; }
     }
 }

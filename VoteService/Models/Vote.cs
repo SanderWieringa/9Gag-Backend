@@ -1,15 +1,19 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel.DataAnnotations;
 
 namespace VoteService.Models
 {
     public class Vote
     {
-        [Required]
-        [Key]
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        [Required]
-        public int PostId { get; set; }
+        /*[Required]
+        [Key]*/
+        [BsonId]
+        public ObjectId Id { get; set; }
+        [BsonElement("userId")]
+        public ObjectId UserId { get; set; }
+        [BsonElement("postId")]
+        public ObjectId PostId { get; set; }
         public Post Post { get; set; }
     }
 }

@@ -16,6 +16,9 @@ using Microsoft.EntityFrameworkCore;
 using MediatR;
 using StackExchange.Redis;
 using PostService.AsyncDataServices;
+using PostService.Models;
+using Microsoft.Extensions.Options;
+using MongoDB.Driver;
 
 namespace PostService
 {
@@ -33,14 +36,14 @@ namespace PostService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if (_env.IsProduction())
+            /*if (_env.IsProduction())
             {
                 try
                 {
                     Console.WriteLine("--> Using SqlServer Db");
                     Console.WriteLine("--> NEW1");
-                    /*services.AddDbContext<PostDbContext>(opt =>
-                        opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));*/
+                    *//*services.AddDbContext<PostDbContext>(opt =>
+                        opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));*//*
                     services.AddDbContext<PostDbContext>(opt =>
                         opt.UseInMemoryDatabase("InMem"));
                 }
@@ -61,12 +64,15 @@ namespace PostService
                 {
                     Console.WriteLine(e.Message);
                 }
-            }
+            }*/
 
             services.AddScoped<IPostCollectionRepo, PostCollectionRepo>();
             services.AddSingleton<IMessageBusClient, MessageBusClient>();
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
+            services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration.GetConnectionString("PostMongo")));
             services.AddMediatR(typeof(PostCollectionRepo).Assembly);
             services.AddSwaggerGen(c =>
             {
@@ -113,7 +119,7 @@ namespace PostService
                 endpoints.MapControllers();
             });
 
-            PrepDb.PrepPopulation(app, env.IsProduction());
+            //PrepDb.PrepPopulation(app, env.IsProduction());
         }
     }
 }

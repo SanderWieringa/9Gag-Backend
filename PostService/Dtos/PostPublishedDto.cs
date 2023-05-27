@@ -1,8 +1,10 @@
-﻿namespace PostService.Dtos
+﻿using MongoDB.Bson;
+
+namespace PostService.Dtos
 {
     public class PostPublishedDto
     {
-        public int Id { get; set; }
+        public ObjectId Id { get; set; }
         public string Title { get; set; }
 
         public string Photo { get; set; }

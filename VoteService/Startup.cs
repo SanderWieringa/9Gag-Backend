@@ -16,6 +16,9 @@ using Microsoft.OpenApi.Models;
 using VoteService.AsyncDataServices;
 using VoteService.Data;
 using VoteService.EventProcessing;
+using Microsoft.Extensions.Options;
+using VoteService.Models;
+using MongoDB.Driver;
 
 namespace VoteService
 {
@@ -36,11 +39,11 @@ namespace VoteService
         {
             /*if (_env.IsProduction())
             {*/
-                Console.WriteLine("--> Using SqlServer Db");
-            /*services.AddDbContext<AppDbContext>(opt =>
-                opt.UseSqlServer(Configuration.GetConnectionString("VoteConn")));*/
-            services.AddDbContext<AppDbContext>(opt =>
-                opt.UseInMemoryDatabase("InMem"));
+            /* Console.WriteLine("--> Using SqlServer Db");
+         *//*services.AddDbContext<AppDbContext>(opt =>
+             opt.UseSqlServer(Configuration.GetConnectionString("VoteConn")));*//*
+         services.AddDbContext<AppDbContext>(opt =>
+             opt.UseInMemoryDatabase("InMem"));*/
             /*}
             else
             {
@@ -49,6 +52,9 @@ namespace VoteService
                     opt.UseInMemoryDatabase("InMem"));
             }*/
 
+            services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
+            services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration.GetConnectionString("VoteMongo")));
             services.AddScoped<IVoteRepo, VoteRepo>();
             services.AddControllers();
             services.AddHostedService<MessageBusSubscriber>();
