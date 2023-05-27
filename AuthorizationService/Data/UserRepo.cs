@@ -1,14 +1,18 @@
 ﻿using AuthorizationService.Models;
+using MongoDB.Driver;
 
 namespace AuthorizationService.Data
 {
     public class UserRepo : IUserRepo
     {
-        private readonly AppDbContext _context;
+        /*private readonly AppDbContext _context;*/
+        private readonly IMongoCollection<User> _users;
 
-        public UserRepo(AppDbContext context)
+        public UserRepo(IDatabaseSettings settings, IMongoClient mongoClient /*AppDbContext context*/)
         {
-            _context = context;
+            /*_context = context;*/
+            var database = mongoClient.GetDatabase(settings.DatabaseName);
+            _users = database.GetCollection<User>(settings.CollectionName);
         }
 
         public void CreateUser(User user)
@@ -17,17 +21,17 @@ namespace AuthorizationService.Data
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            _context.Users.Add(user);
+            _users.InsertOne(user);
         }
 
         public IEnumerable<User> GetAllUsers()
         {
-            return _context.Users.ToList();
+            return _users.Find(user => true).ToList();
         }
 
-        public bool SaveChanges()
+        /*public bool SaveChanges()
         {
             return (_context.SaveChanges() >= 0);
-        }
+        }*/
     }
 }

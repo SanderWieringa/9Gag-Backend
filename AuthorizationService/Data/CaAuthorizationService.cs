@@ -27,14 +27,12 @@ namespace AuthorizationService.Data
             {
                 u = new User()
                 {
-                    id = Guid.NewGuid(),
                     name = payload.Name,
                     email = payload.Email,
                     oauthSubject = payload.Subject,
                     oauthIssuer = payload.Issuer
                 };
                 _repo.CreateUser(u);
-                _repo.SaveChanges();
             }
             return u;
         }

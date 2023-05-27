@@ -12,7 +12,7 @@ namespace PostService.Data
 
         /*private readonly PostDbContext _context;*/
 
-        public PostCollectionRepo(IDatabaseSettings settings, IMongoClient mongoClient/*PostDbContext context*/)
+        public PostCollectionRepo(IDatabaseSettings settings, IMongoClient mongoClient /*PostDbContext context*/)
         {
             /*_context = context;*/
             var database = mongoClient.GetDatabase(settings.DatabaseName);

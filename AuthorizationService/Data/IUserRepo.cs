@@ -6,6 +6,6 @@ namespace AuthorizationService.Data
     {
         IEnumerable<User> GetAllUsers();
         void CreateUser(User user);
-        bool SaveChanges();
+        /*bool SaveChanges();*/
     }
 }

@@ -1,9 +1,12 @@
 ﻿using AuthorizationService.Data;
+using AuthorizationService.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using System;
 using System.Text;
 
@@ -23,11 +26,11 @@ namespace AuthorizationService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            if (_env.IsProduction())
+            /*if (_env.IsProduction())
             {
                 Console.WriteLine("--> Using SqlServer Db");
-                /*services.AddDbContext<AppDbContext>(opt =>
-                    opt.UseSqlServer(Configuration.GetConnectionString("UserConn")));*/
+                *//*services.AddDbContext<AppDbContext>(opt =>
+                    opt.UseSqlServer(Configuration.GetConnectionString("UserConn")));*//*
                 services.AddDbContext<AppDbContext>(opt =>
                     opt.UseInMemoryDatabase("InMem"));
             }
@@ -36,8 +39,11 @@ namespace AuthorizationService
                 Console.WriteLine("--> Using InMem Db");
                 services.AddDbContext<AppDbContext>(opt =>
                     opt.UseInMemoryDatabase("InMem"));
-            }
+            }*/
 
+            services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
+            services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
+            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration.GetConnectionString("AuthMongo")));
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IAuthService, CaAuthorizationService>();
             services.AddControllers();
