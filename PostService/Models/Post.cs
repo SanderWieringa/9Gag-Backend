@@ -17,5 +17,12 @@ namespace PostService.Models
         public string Title { get; set; }
         [BsonElement("photo")]
         public string Photo { get; set; }
+
+       /* public Post(ObjectId id, string title, string photo)
+        {
+            Id = id;
+            Title = title;
+            Photo = photo;
+        }*/
     }
 }

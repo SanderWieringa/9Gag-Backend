@@ -13,6 +13,8 @@ using PostService.Extensions;
 using PostService.AsyncDataServices;
 using PostService.Dtos;
 using MongoDB.Bson;
+using StackExchange.Redis;
+using Microsoft.Extensions.Configuration;
 
 namespace PostService.Controllers
 {
@@ -26,21 +28,64 @@ namespace PostService.Controllers
         private readonly IMessageBusClient _messageBusClient;
         private IEnumerable<Post> posts;
         private string loadLocation = "";
+        public IConfiguration Configuration { get; }
         // fix 1
-        
+        ConfigurationOptions options = null;
+        ConnectionMultiplexer redis = null;
 
-        public PostController(IMapper mapper, IMediator mediator, IDistributedCache cache, IMessageBusClient messageBusClient)
+        public PostController(IConfiguration configuration, IMapper mapper, IMediator mediator, IDistributedCache cache, IMessageBusClient messageBusClient)
         {
+            Configuration = configuration;
             _mapper = mapper;
             _mediator = mediator;
             _cache = cache;
             _messageBusClient = messageBusClient;
+            options = new ConfigurationOptions
+            {
+                EndPoints = { { Configuration.GetConnectionString("Redis"), 10967 } },
+                Password = "wmKX4BRxr7GA!",
+                User = "9GagUser",
+                Ssl = true, // Set to true if using SSL/TLS encryption
+                AbortOnConnectFail = false // Set to true to throw an exception on connection failure
+            };
+            redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis"));
         }
 
         [HttpGet]
         public async Task<IEnumerable<Post>> Get()
         {
-            posts = null;
+            List<Post> posts = null;
+            //ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis"));
+
+            IDatabase redisDb = redis.GetDatabase();
+
+            // Use SCAN command to iterate over all keys in Redis
+            string cursor = "0";
+
+            // Scan for keys matching a pattern (e.g., "*" for all keys)
+            RedisResult scanResult = redisDb.Execute("SCAN", cursor);
+
+            // Retrieve the cursor and the keys from the scan result
+            RedisResult[] scanArray = (RedisResult[])scanResult;
+            cursor = (string)scanArray[0];
+            RedisKey[] keys = (RedisKey[])scanArray[1];
+
+            // Use GET command to fetch the values of the keys
+            RedisValue[] values = redisDb.StringGet(keys);
+
+            // Process the retrieved values as desired
+            foreach (RedisValue value in values)
+            {
+                // Do something with the value
+                Console.WriteLine(value);
+            }
+
+            redis.Close();
+            redis.Dispose();
+
+            return posts;
+
+            /*posts = null;
             loadLocation = null;
 
             string recordKey = "Post_" + DateTime.Now.ToString("yyyyMMdd_hhmm");
@@ -67,7 +112,7 @@ namespace PostService.Controllers
                 Console.WriteLine(e.Message);
             }
 
-            return posts;
+            return posts;*/
         }
 
         [HttpGet("{id}")]
