@@ -33,8 +33,9 @@ jobs:
           docker build --tag ${{ env.ACR_REGISTRY }}/${{ env.K8S_DEPLOYMENT_NAME }} .
           docker push ${{ env.ACR_REGISTRY }}/${{ env.K8S_DEPLOYMENT_NAME }}
 
-      - name: Install Azure CLI
-        uses: azure/CLI@v1
+      - name: Set up Azure CLI
+        run: |
+           curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
         
       - name: Azure Login
         uses: azure/login@v1
