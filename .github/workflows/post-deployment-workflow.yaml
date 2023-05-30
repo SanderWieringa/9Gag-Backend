@@ -48,5 +48,6 @@ jobs:
 
       - name: Deploy to AKS
         run: |
-          kubectl set image posts-depl.yaml -n ${{ env.AKS_NAMESPACE }}
+          kubectl set image ${{ env.K8S_DEPLOYMENT_NAME }} *=${{ env.ACR_REGISTRY }}/postservice -n ${{ env.K8S_NAMESPACE }}
+          
           
