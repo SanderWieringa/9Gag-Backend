@@ -9,7 +9,7 @@ env:
   ACR_PASSWORD: ${{ secrets.REGISTRY_PASSWORD }}
   AKS_RESOURCE_GROUP: 9Gag-Backend
   AKS_CLUSTER_NAME: 9Gag-Backend
-  K8S_NAMESPACE: default
+  AKS_NAMESPACE: default
   K8S_DEPLOYMENT_NAME: postservice
 
 jobs:
