@@ -49,3 +49,4 @@ jobs:
       - name: Deploy to AKS
         run: |
           kubectl apply -f votes-depl.yaml -n ${{ env.AKS_NAMESPACE }}
+          kubectl rollout restart deployment votes-depl
