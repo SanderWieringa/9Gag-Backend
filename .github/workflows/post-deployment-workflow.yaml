@@ -48,4 +48,5 @@ jobs:
 
       - name: Deploy to AKS
         run: |
+          cd ..
           run: kubectl apply -f posts-depl.yaml -n ${{ env.AKS_NAMESPACE }}
