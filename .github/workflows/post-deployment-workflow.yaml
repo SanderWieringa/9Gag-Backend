@@ -62,5 +62,3 @@ jobs:
         run: |
           kubectl apply -f posts-depl.yaml -n ${{ env.AKS_NAMESPACE }}
           kubectl rollout restart deployment posts-depl
-          
-          
