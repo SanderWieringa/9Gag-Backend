@@ -22,7 +22,7 @@ jobs:
       
       - name: Run tests
         run: |
-          cd PostService.Tests
+          cd PostServiceTests
           dotnet test
 
       - name: Log in to Azure Container Registry
