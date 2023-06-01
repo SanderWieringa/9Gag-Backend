@@ -51,6 +51,7 @@ namespace PostService.Controllers
             redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis"));
         }
 
+
         [HttpGet]
         public async Task<IEnumerable<Post>> Get()
         {
