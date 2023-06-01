@@ -28,4 +28,4 @@ jobs:
         with:
           args: >
             -Dsonar.organization=SanderWieringa
-            -Dsonar.projectKey=sanderwieringa
+            -Dsonar.projectKey=sonar.pullrequest.github.summary_comment
