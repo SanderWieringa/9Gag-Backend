@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - master
+      - '*/master'
 
 jobs:
   sonarcloud:
@@ -27,5 +31,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.organization=SanderWieringa
-            -Dsonar.projectKey=sanderwieringa
+            -Dsonar.organization=sanderwieringa
+            -Dsonar.projectKey=SanderWieringa_9Gag-Backend
