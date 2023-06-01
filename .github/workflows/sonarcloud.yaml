@@ -46,4 +46,5 @@ jobs:
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"SanderWieringa_9Gag-Backend" /o:"sanderwieringa" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
           cd PostService
           dotnet build
+          cd ..
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
