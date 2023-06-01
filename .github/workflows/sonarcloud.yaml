@@ -5,9 +5,9 @@ on:
     branches:
       - master
   pull_request:
-   branches:
-      - main
-      - '*/main'
+    branches:
+      - master
+      - '*/master'
 
 jobs:
   sonarcloud:
