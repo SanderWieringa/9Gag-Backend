@@ -31,5 +31,5 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args: >
-            -Dsonar.organization=SanderWieringa
-            -Dsonar.projectKey=sonar.pullrequest.github.summary_comment
+            -Dsonar.organization=sanderwieringa
+            -Dsonar.projectKey=SanderWieringa_9Gag-Backend
