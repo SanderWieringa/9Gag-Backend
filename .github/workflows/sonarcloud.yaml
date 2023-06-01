@@ -3,6 +3,7 @@ name: SonarCloud Analysis
 on:
   push:
     branches:
+      - master
       - feature/Sonarcloud
 
 jobs:
