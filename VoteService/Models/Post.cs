@@ -18,8 +18,8 @@ namespace VoteService.Models
         [BsonElement("title")]
         public string Title { get; set; }
         /*[Required]*/
-        [BsonElement("photo")]
-        public string Photo { get; set; }
+        [BsonElement("imageFile")]
+        public IFormFile ImageFile { get; set; }
         public ICollection<Vote> Votes { get; set; } = new List<Vote>();
     }
 }

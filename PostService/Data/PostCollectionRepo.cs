@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using System.Reflection;
 
 namespace PostService.Data
 {
@@ -47,7 +48,20 @@ namespace PostService.Data
 
         public Post InsertPost(Post post)
         {
-            _posts.InsertOne(post);
+            if (post.ImageFile != null && post.ImageFile.Length > 0)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    post.ImageFile.CopyTo(memoryStream);
+
+                    var fileData = memoryStream.ToArray();
+
+                    var postDocument = new Post(post.Title, fileData);
+
+                    _posts.InsertOne(postDocument);
+                }
+            }
+            
             return post;
         }
 

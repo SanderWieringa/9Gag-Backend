@@ -10,6 +10,6 @@ namespace PostService.Dtos
 
         public string Title { get; set; }
 
-        public string Photo { get; set; }
+        public IFormFile ImageFile { get; set; }
     }
 }
