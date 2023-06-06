@@ -40,6 +40,7 @@ namespace PostService.Data
             return _posts.Find(post => true).ToList();
         }
 
+        //demo
         public Post GetPostById(ObjectId id)
         {
             return _posts.Find(post => post.Id == id).FirstOrDefault();
