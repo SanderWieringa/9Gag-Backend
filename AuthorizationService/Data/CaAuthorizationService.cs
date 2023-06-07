@@ -22,7 +22,8 @@ namespace AuthorizationService.Data
 
         private User FindUserOrAdd(Payload payload)
         {
-            var u = _repo.GetAllUsers().Where(x => x.email == payload.Email).FirstOrDefault();
+            //var u = _repo.GetAllUsers().Where(x => x.email == payload.Email).FirstOrDefault();
+            var u = new User();
             if (u == null)
             {
                 u = new User()
@@ -32,7 +33,7 @@ namespace AuthorizationService.Data
                     oauthSubject = payload.Subject,
                     oauthIssuer = payload.Issuer
                 };
-                _repo.CreateUser(u);
+                //_repo.CreateUser(u);
             }
             return u;
         }
