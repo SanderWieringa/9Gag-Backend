@@ -1,9 +1,12 @@
 name: Build and Deploy
 
 on:
-  push:
-    branches:
-      - master
+  workflow_dispatch:
+    inputs:
+      trigger:
+        description: 'Trigger the workflow manually'
+        required: true
+        default: 'none'
 
 env:
   ACR_REGISTRY: sanderwieringa.azurecr.io
