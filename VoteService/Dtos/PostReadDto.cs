@@ -6,6 +6,6 @@ namespace VoteService.Dtos
     {
         public ObjectId Id { get; set; }
         public string Title { get; set; }
-        public string Photo { get; set; }
+        public IFormFile ImageFile { get; set; }
     }
 }

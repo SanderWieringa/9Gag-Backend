@@ -7,7 +7,7 @@ namespace PostService.Dtos
     public class PostCreateDto
     {
         public string Title { get; set; }
-        //public IFormFile Photo { get; set; }
-        public string Photo { get; set; }
+        public IFormFile ImageFile { get; set; }
+        //public string Photo { get; set; }
     }
 }

@@ -19,6 +19,7 @@ using PostService.AsyncDataServices;
 using PostService.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using PostService.Helpers;
 
 namespace PostService
 {
@@ -74,14 +75,12 @@ namespace PostService
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration.GetConnectionString("PostMongo")));
             services.AddMediatR(typeof(PostCollectionRepo).Assembly);
+            services.AddControllers(opt => opt.InputFormatters.Insert(0, new TextPlainInputFormatter()));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PostService", Version = "v1" });
             });
-            services.AddCors(c =>
-            {
-                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
-            });
+            services.AddCors();
             try
             {
                 services.AddStackExchangeRedisCache(options =>
@@ -106,7 +105,7 @@ namespace PostService
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Backend v1"));
             }
 
-            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader());
 
             //app.UseHttpsRedirection();
 

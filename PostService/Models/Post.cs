@@ -15,14 +15,31 @@ namespace PostService.Models
         public ObjectId Id { get; set; }
         [BsonElement("title")]
         public string Title { get; set; }
-        [BsonElement("photo")]
-        public string Photo { get; set; }
+        [BsonElement("imageFile")]
+        public IFormFile ImageFile { get; set; }
 
-       /* public Post(ObjectId id, string title, string photo)
+        public Post(string title, byte[] imageFile)
         {
-            Id = id;
             Title = title;
-            Photo = photo;
-        }*/
+            using (var memoryStream = new MemoryStream(imageFile))
+            {
+                ImageFile = new FormFile(memoryStream, 0, imageFile.Length, null, ".png");
+            }
+        }
+
+        public Post(PostModel postModel)
+        {
+            Title = postModel.Title;
+            using (var memoryStream = new MemoryStream(postModel.ImageFile))
+            {
+                ImageFile = new FormFile(memoryStream, 0, postModel.ImageFile.Length, null, ".png");
+            }
+        }
+
+        public Post(string title, IFormFile imageFile)
+        {
+            Title = title;
+            ImageFile = imageFile;
+        }
     }
 }
