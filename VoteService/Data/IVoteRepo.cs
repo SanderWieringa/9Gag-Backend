@@ -6,9 +6,6 @@ namespace VoteService.Data
 {
     public interface IVoteRepo
     {
-        /*bool SaveChanges();*/
-
-
         // Posts
         IEnumerable<Post> GetAllPosts();
         void CreatePost(Post post);

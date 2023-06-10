@@ -37,21 +37,6 @@ namespace VoteService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            /*if (_env.IsProduction())
-            {*/
-            /* Console.WriteLine("--> Using SqlServer Db");
-         *//*services.AddDbContext<AppDbContext>(opt =>
-             opt.UseSqlServer(Configuration.GetConnectionString("VoteConn")));*//*
-         services.AddDbContext<AppDbContext>(opt =>
-             opt.UseInMemoryDatabase("InMem"));*/
-            /*}
-            else
-            {
-                Console.WriteLine("--> Using InMem Db");
-                services.AddDbContext<AppDbContext>(opt =>
-                    opt.UseInMemoryDatabase("InMem"));
-            }*/
-
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration.GetConnectionString("VoteMongo")));
@@ -82,8 +67,6 @@ namespace VoteService
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "VoteService v1"));
             }
 
-            //app.UseHttpsRedirection();
-
             app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
             app.UseRouting();
@@ -94,8 +77,6 @@ namespace VoteService
             {
                 endpoints.MapControllers();
             });
-
-            //PrepDb.PrepPopulation(app, env.IsProduction());
         }
     }
 }

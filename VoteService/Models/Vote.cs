@@ -6,8 +6,6 @@ namespace VoteService.Models
 {
     public class Vote
     {
-        /*[Required]
-        [Key]*/
         [BsonId]
         public ObjectId Id { get; set; }
         [BsonElement("userId")]

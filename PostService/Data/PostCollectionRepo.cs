@@ -11,28 +11,14 @@ namespace PostService.Data
     {
         private readonly IMongoCollection<PostModel> _posts;
 
-        /*private readonly PostDbContext _context;*/
-
-        public PostCollectionRepo(IDatabaseSettings settings, IMongoClient mongoClient /*PostDbContext context*/)
+        public PostCollectionRepo(IDatabaseSettings settings, IMongoClient mongoClient)
         {
-            /*_context = context;*/
             var database = mongoClient.GetDatabase(settings.DatabaseName);
             _posts = database.GetCollection<PostModel>(settings.CollectionName);
         }
 
         public void CreatePost(Post post)
         {
-            /*if (post == null)
-            {
-                throw new ArgumentNullException(nameof(post));
-            }
-            *//*using (var ms = new MemoryStream())
-            {
-                post.Photo.CopyTo(ms);
-                var fileBytes = ms.ToArray();
-                string bytes = Convert.ToBase64String(fileBytes);
-                post.Image = bytes;
-            }*/
             if (post.ImageFile != null && post.ImageFile.Length > 0)
             {
                 using (var memoryStream = new MemoryStream())
@@ -62,8 +48,6 @@ namespace PostService.Data
 
             return posts;
         }
-
-        //demo
         public Post GetPostById(ObjectId id)
         {
             var postModel = _posts.Find(post => post.Id == id).FirstOrDefault();
@@ -93,11 +77,5 @@ namespace PostService.Data
             
             return post;
         }
-
-        /*
-        public bool SaveChanges()
-        {
-            return (_context.SaveChanges() >= 0);
-        }*/
     }
 }

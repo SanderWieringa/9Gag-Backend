@@ -8,6 +8,5 @@ namespace PostService.Dtos
     {
         public string Title { get; set; }
         public IFormFile ImageFile { get; set; }
-        //public string Photo { get; set; }
     }
 }

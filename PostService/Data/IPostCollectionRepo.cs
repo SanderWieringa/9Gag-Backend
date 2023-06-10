@@ -5,8 +5,6 @@ namespace PostService.Data
 {
     public interface IPostCollectionRepo
     {
-        /*bool SaveChanges();*/
-        
         IEnumerable<Post> GetAllPosts();
         Post GetPostById(ObjectId id);
         void CreatePost(Post post);

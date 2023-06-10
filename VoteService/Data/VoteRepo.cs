@@ -13,11 +13,8 @@ namespace VoteService.Data
         private readonly IMongoCollection<Vote> _votes;
         private readonly IMongoCollection<Post> _posts;
 
-        /*private readonly AppDbContext _context;*/
-
-        public VoteRepo(IDatabaseSettings settings, IMongoClient mongoClient /*AppDbContext context*/)
+        public VoteRepo(IDatabaseSettings settings, IMongoClient mongoClient)
         {
-            /*_context = context;*/
             var voteDatabase = mongoClient.GetDatabase(settings.VoteDatabaseName);
             _votes = voteDatabase.GetCollection<Vote>(settings.VoteCollectionName);
 
@@ -54,7 +51,6 @@ namespace VoteService.Data
             }
             return false;
 
-            //return _context.Posts.Any(p => p.ExternalId == externalPostId);
         }
 
         public IEnumerable<Post> GetAllPosts()
@@ -65,14 +61,10 @@ namespace VoteService.Data
         public Vote GetVote(ObjectId postId, ObjectId voteId)
         {
             return _votes.Find(v => v.PostId == postId && v.Id == voteId).FirstOrDefault();
-
-            //return _context.Votes.Where(v => v.PostId == postId && v.Id == voteId).FirstOrDefault();
         }
 
         public IEnumerable<Vote> GetVotesForPost(ObjectId postId)
         {
-            //return _context.Votes.Where(v => v.PostId == postId);
-
             return _votes.Find(v => v.PostId == postId).ToList();
         }
 
@@ -84,13 +76,6 @@ namespace VoteService.Data
                 return true;
             }
             return false;
-
-            //return _context.Posts.Any(p => p.Id == postId);
         }
-
-        /*public bool SaveChanges()
-        {
-            return (_context.SaveChanges() >= 0);
-        }*/
     }
 }

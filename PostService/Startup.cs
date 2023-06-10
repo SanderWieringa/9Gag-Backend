@@ -19,7 +19,6 @@ using PostService.AsyncDataServices;
 using PostService.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
-using PostService.Helpers;
 
 namespace PostService
 {
@@ -37,36 +36,6 @@ namespace PostService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            /*if (_env.IsProduction())
-            {
-                try
-                {
-                    Console.WriteLine("--> Using SqlServer Db");
-                    Console.WriteLine("--> NEW1");
-                    *//*services.AddDbContext<PostDbContext>(opt =>
-                        opt.UseSqlServer(Configuration.GetConnectionString("PostConn")));*//*
-                    services.AddDbContext<PostDbContext>(opt =>
-                        opt.UseInMemoryDatabase("InMem"));
-                }
-                catch(Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }
-            else
-            {
-                try
-                {
-                    Console.WriteLine("--> Using InMem Db");
-                    services.AddDbContext<PostDbContext>(opt =>
-                        opt.UseInMemoryDatabase("InMem"));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }*/
-
             services.AddScoped<IPostCollectionRepo, PostCollectionRepo>();
             services.AddSingleton<IMessageBusClient, MessageBusClient>();
             services.AddControllers();
@@ -75,7 +44,6 @@ namespace PostService
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration.GetConnectionString("PostMongo")));
             services.AddMediatR(typeof(PostCollectionRepo).Assembly);
-            services.AddControllers(opt => opt.InputFormatters.Insert(0, new TextPlainInputFormatter()));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PostService", Version = "v1" });
@@ -107,7 +75,6 @@ namespace PostService
 
             app.UseCors(options => options.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader());
 
-            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
@@ -117,8 +84,6 @@ namespace PostService
             {
                 endpoints.MapControllers();
             });
-
-            //PrepDb.PrepPopulation(app, env.IsProduction());
         }
     }
 }
