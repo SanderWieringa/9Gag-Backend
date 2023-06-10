@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-resource
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  rules:
+    - host: "34.141.52.221.nip.io"
+      http:
+        paths:
+            -   path: /api/Post
+                pathType: Prefix
+                backend:
+                    service:
+                        name: posts-clusterip-srv
+                        port:
+                            number: 80
+            -   path: /api/v/Post
+                pathType: Prefix
+                backend:
+                    service:
+                        name: votes-clusterip-srv
+                        port:
+                            number: 80
+            -   path: /api/Authorization
+                pathType: Prefix
+                backend:
+                    service:
+                        name: authorization-clusterip-srv
+                        port:
+                            number: 80

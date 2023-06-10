@@ -8,6 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "K8S", "K8S", "{F50D3C82-253
 		authentication-depl.yaml = authentication-depl.yaml
 		authorization-depl.yaml = authorization-depl.yaml
 		ingress-srv.yaml = ingress-srv.yaml
+		ingress.yaml = ingress.yaml
 		loadBalancer.yaml = loadBalancer.yaml
 		local-pvc-vote.yaml = local-pvc-vote.yaml
 		local-pvc.yaml = local-pvc.yaml
@@ -30,11 +31,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationService", "Aut
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthenticationService", "AuthenticationService\AuthenticationService.csproj", "{F70E916F-7E15-4393-BA2F-C16EE7A478E7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PostServiceTests", "PostServiceTests\PostServiceTests.csproj", "{AE2DF17A-456E-4153-8893-94D5C8979C8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostServiceTests", "PostServiceTests\PostServiceTests.csproj", "{AE2DF17A-456E-4153-8893-94D5C8979C8B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VoteServiceTests", "VoteServiceTests\VoteServiceTests.csproj", "{3FAA6FC2-A84F-4328-820D-D254F4BDDDD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VoteServiceTests", "VoteServiceTests\VoteServiceTests.csproj", "{3FAA6FC2-A84F-4328-820D-D254F4BDDDD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthorizationServiceTests", "AuthorizationServiceTests\AuthorizationServiceTests.csproj", "{FEB33072-D0D8-4FA0-9F55-52A41EEB385B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AuthorizationServiceTests", "AuthorizationServiceTests\AuthorizationServiceTests.csproj", "{FEB33072-D0D8-4FA0-9F55-52A41EEB385B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
