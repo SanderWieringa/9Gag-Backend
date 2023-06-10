@@ -27,6 +27,15 @@ namespace PostService.Models
             }
         }
 
+        public Post(PostModel postModel)
+        {
+            Title = postModel.Title;
+            using (var memoryStream = new MemoryStream(postModel.ImageFile))
+            {
+                ImageFile = new FormFile(memoryStream, 0, postModel.ImageFile.Length, null, ".png");
+            }
+        }
+
         public Post(string title, IFormFile imageFile)
         {
             Title = title;
