@@ -55,11 +55,13 @@ namespace AuthorizationService.Controllers
         {
             var payload = await VerifyGoogleTokenId(request.Credential);
             var user = await _authService.Authenticate(payload);
-
+            Console.WriteLine("payload.Audience: ", payload.Audience);
+            Console.WriteLine("payload.Issuer: ", payload.Issuer);
             var claims = new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(_configuration["JwtEmailEncryption"], user.email)),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Aud, (string)payload.Audience),
                 };
 
             var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JwtSecret"]));

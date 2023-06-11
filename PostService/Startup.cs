@@ -19,6 +19,9 @@ using PostService.AsyncDataServices;
 using PostService.Models;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace PostService
 {
@@ -36,6 +39,19 @@ namespace PostService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = "https://accounts.google.com",
+                    ValidAudience = "86108609563-g3elr6e4kbqiqv677nuu1kltsul1sb0j.apps.googleusercontent.com",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("My Secret Phrase"))
+                };
+            });
             services.AddScoped<IPostCollectionRepo, PostCollectionRepo>();
             services.AddSingleton<IMessageBusClient, MessageBusClient>();
             services.AddControllers();

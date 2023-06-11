@@ -15,6 +15,8 @@ using MongoDB.Bson;
 using StackExchange.Redis;
 using Microsoft.Extensions.Configuration;
 using System.Net;
+using Microsoft.AspNetCore.Authorization;
+using System.Data;
 
 namespace PostService.Controllers
 {
@@ -96,6 +98,7 @@ namespace PostService.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         [Consumes("multipart/form-data")]
         public async Task<Post> Post([FromForm] PostCreateDto postCreateDto)
         {
