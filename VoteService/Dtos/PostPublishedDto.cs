@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using SharpCompress.Common;
 
 namespace VoteService.Dtos
 {
@@ -6,7 +7,9 @@ namespace VoteService.Dtos
     {
         public ObjectId Id { get; set; }
         public string Title { get; set; }
-        public IFormFile ImageFile { get; set; }
+        /*public string ImageFile { get; set; }*/
+        public byte[] ImageFile { get; set; }
+        /*public IFormFile ImageFile { get; set; }*/
         public string Event { get; set; }
     }
 }

@@ -37,6 +37,12 @@ namespace VoteService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Console.WriteLine("--> Using SqlServer Db");
+            /*services.AddDbContext<AppDbContext>(opt =>
+                opt.UseSqlServer(Configuration.GetConnectionString("VoteConn")));*/
+            services.AddDbContext<AppDbContext>(opt =>
+                opt.UseInMemoryDatabase("InMem"));
+
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration.GetConnectionString("VoteMongo")));

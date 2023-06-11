@@ -109,9 +109,10 @@ namespace PostService.Controllers
             // Send Async Message
             try
             {
-                var platformPublishedDto = _mapper.Map<PostPublishedDto>(postReadDto);
-                platformPublishedDto.Event = "Post_Published";
-                _messageBusClient.PublishNewPost(platformPublishedDto);
+                PostPublishedDto postPublishedDto = new PostPublishedDto(postReadDto);
+                /*var platformPublishedDto = _mapper.Map<PostPublishedDto>(postReadDto);*/
+                postPublishedDto.Event = "Post_Published";
+                _messageBusClient.PublishNewPost(postPublishedDto);
             }
             catch (Exception e)
             {

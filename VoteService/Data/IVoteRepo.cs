@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using VoteService.Dtos;
 using VoteService.Models;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -6,9 +7,11 @@ namespace VoteService.Data
 {
     public interface IVoteRepo
     {
+        bool SaveChanges();
+
         // Posts
-        IEnumerable<Post> GetAllPosts();
-        void CreatePost(Post post);
+        IEnumerable<PostDbDto> GetAllPosts();
+        void CreatePost(PostDbDto post);
         bool PostExists(ObjectId postId);
         bool ExternalPostExists(ObjectId externalPostId);
 

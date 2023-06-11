@@ -16,5 +16,20 @@ namespace VoteService.Models
         [BsonElement("imageFile")]
         public IFormFile ImageFile { get; set; }
         public ICollection<Vote> Votes { get; set; } = new List<Vote>();
+
+        public Post()
+        {
+            
+        }
+
+        /*public Post(PostModel postModel)
+        {
+            Title = postModel.Title;
+            ExternalId = postModel.ExternalId;
+            using (var memoryStream = new MemoryStream(postModel.ImageFile))
+            {
+                ImageFile = new FormFile(memoryStream, 0, postModel.ImageFile.Length, null, ".png");
+            }
+        }*/
     }
 }

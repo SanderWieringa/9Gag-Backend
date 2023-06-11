@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using MongoDB.Bson.IO;
+using System.Text;
 using System.Text.Json;
 using VoteService.Data;
 using VoteService.Dtos;
@@ -48,20 +50,40 @@ namespace VoteService.EventProcessing
             }
         }
 
+        public class StringFile
+        {
+            public string FileName { get; set; }
+            public string Content { get; set; }
+        }
+
         private void AddPost(string postPublishedMessage)
         {
             using (var scope = _scopeFactory.CreateScope())
             {
                 var repo = scope.ServiceProvider.GetRequiredService<IVoteRepo>();
+                /*StringFile stringFile = JsonSerializer.Deserialize<StringFile>(postPublishedMessage);
+                Console.WriteLine("stringFile: ", stringFile);
+                byte[] fileBytes = Encoding.UTF8.GetBytes(stringFile.Content);
+                Console.WriteLine("fileBytes: ", fileBytes);
+                IFormFile imageFile;
 
-                var platformPublishedDto = JsonSerializer.Deserialize<PostPublishedDto>(postPublishedMessage);
+                byte[] bytes = Encoding.UTF8.GetBytes(postPublishedMessage);
+
+                using (var memoryStream = new MemoryStream())
+                {
+                    imageFile = new FormFile(memoryStream, 0, bytes.Length, null, ".png");
+                }*/
+
+                PostPublishedDto postPublishedDto = JsonSerializer.Deserialize<PostPublishedDto>(postPublishedMessage);
 
                 try
                 {
-                    var post = _mapper.Map<Post>(platformPublishedDto);
-                    if (!repo.ExternalPostExists(post.ExternalId))
+                    PostModel postmodel = new PostModel(postPublishedDto);
+                    var post = _mapper.Map<Post>(postmodel);
+                    PostDbDto postDto = new PostDbDto(post);
+                    if (!repo.ExternalPostExists(postDto.ExternalId))
                     {
-                        repo.CreatePost(post);
+                        repo.CreatePost(postDto);
                         Console.WriteLine("--> Post added...");
                     }
                 }

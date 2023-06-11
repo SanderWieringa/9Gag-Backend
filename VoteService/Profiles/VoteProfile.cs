@@ -13,7 +13,7 @@ namespace VoteService.Profiles
             CreateMap<Post, PostReadDto>();
             CreateMap<VoteCreateDto, Vote>();
             CreateMap<Vote, VoteReadDto>();
-            CreateMap<PostPublishedDto, Post>()
+            CreateMap<PostModel, Post>()
                 .ForMember(destination => destination.ExternalId, options => options.MapFrom(source => source.Id));
         }
     }

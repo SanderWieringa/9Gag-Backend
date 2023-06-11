@@ -1,6 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.ComponentModel.DataAnnotations;
+using VoteService.Dtos;
 
 namespace VoteService.Models
 {
@@ -12,6 +13,6 @@ namespace VoteService.Models
         public ObjectId UserId { get; set; }
         [BsonElement("postId")]
         public ObjectId PostId { get; set; }
-        public Post Post { get; set; }
+        public PostDbDto Post { get; set; }
     }
 }
