@@ -46,13 +46,13 @@ namespace PostService.Controllers
             _hostEnvironment = hostEnvironment;
             options = new ConfigurationOptions
             {
-                EndPoints = { { Configuration.GetConnectionString("Redis"), 10967 } },
-                Password = "wmKX4BRxr7GA!",
-                User = "9GagUser",
+                EndPoints = { { Configuration["Redis"], 10967 } },
+                Password = Configuration["RedisPassword"],
+                User = Configuration["RedisUser"],
                 Ssl = true, // Set to true if using SSL/TLS encryption
                 AbortOnConnectFail = false // Set to true to throw an exception on connection failure
             };
-            redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis"));
+            redis = ConnectionMultiplexer.Connect(Configuration["Redis"]);
         }
 
 

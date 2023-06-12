@@ -42,7 +42,7 @@ namespace PostService
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration.GetConnectionString("PostMongo")));
+            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration["PostMongo"]));
             services.AddMediatR(typeof(PostCollectionRepo).Assembly);
             services.AddSwaggerGen(c =>
             {
@@ -53,7 +53,7 @@ namespace PostService
             {
                 services.AddStackExchangeRedisCache(options =>
                 {
-                    options.Configuration = Configuration.GetConnectionString("Redis");
+                    options.Configuration = Configuration["Redis"];
                     options.InstanceName = "Post_";
                 });
             }

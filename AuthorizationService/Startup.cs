@@ -43,7 +43,7 @@ namespace AuthorizationService
 
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration.GetConnectionString("AuthMongo")));
+            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration["AuthMongo"]));
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IAuthService, CaAuthorizationService>();
             services.AddControllers();
@@ -77,7 +77,7 @@ namespace AuthorizationService
                 cfg.TokenValidationParameters = new TokenValidationParameters()
                 {
                     ValidateIssuerSigningKey = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["AppSettings:JwtSecret"])),
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecret"])),
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
