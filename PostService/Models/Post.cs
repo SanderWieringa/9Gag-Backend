@@ -18,13 +18,25 @@ namespace PostService.Models
         [BsonElement("imageFile")]
         public IFormFile ImageFile { get; set; }
 
-        public Post(string title, byte[] imageFile)
+        public Post(ObjectId id, string title)
         {
+            Id = id;
+            Title = title;
+        }
+
+        public Post(ObjectId id, string title, byte[] imageFile)
+        {
+            Id = id;
             Title = title;
             using (var memoryStream = new MemoryStream(imageFile))
             {
                 ImageFile = new FormFile(memoryStream, 0, imageFile.Length, null, ".png");
             }
+        }
+
+        public Post()
+        {
+            
         }
 
         public Post(PostModel postModel)

@@ -15,6 +15,8 @@ using MongoDB.Bson;
 using StackExchange.Redis;
 using Microsoft.Extensions.Configuration;
 using System.Net;
+using MongoDB.Bson.IO;
+using System.Text.Json;
 
 namespace PostService.Controllers
 {
@@ -55,9 +57,9 @@ namespace PostService.Controllers
 
 
         [HttpGet]
-        public async Task<IEnumerable<Post>> Get()
+        public async Task<IEnumerable<PostRedisDto>> Get()
         {
-            List<Post> posts = null;
+            List<PostRedisDto> posts = new();
             //ConnectionMultiplexer redis = ConnectionMultiplexer.Connect(Configuration.GetConnectionString("Redis"));
 
             IDatabase redisDb = redis.GetDatabase();
@@ -81,6 +83,10 @@ namespace PostService.Controllers
             {
                 // Do something with the value
                 Console.WriteLine(value);
+                string serializedValue = value.ToString();
+                PostRedisDto post = JsonSerializer.Deserialize<PostRedisDto>(value);
+
+                posts.Add(post);
             }
 
             redis.Close();
