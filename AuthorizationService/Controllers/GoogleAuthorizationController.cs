@@ -11,6 +11,7 @@ using System.IdentityModel.Tokens.Jwt;
 using AuthorizationService.Helpers;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace AuthorizationService.Controllers
 {
@@ -57,27 +58,54 @@ namespace AuthorizationService.Controllers
             var user = await _authService.Authenticate(payload);
             Console.WriteLine("payload.Audience: ", payload.Audience);
             Console.WriteLine("payload.Issuer: ", payload.Issuer);
+            var jwtEmailEncryption = _configuration["JwtEmailEncryption"];
+            var JwtSecret = _configuration["JwtSecret"];
+            Console.WriteLine("_configuration[\"JwtEmailEncryption\"]: ", jwtEmailEncryption);
+            Console.WriteLine("_configuration[\"JwtSecret\"]: ", JwtSecret);
             var claims = new[]
                 {
                     new Claim(JwtRegisteredClaimNames.Sub, Security.Encrypt(_configuration["JwtEmailEncryption"], user.email)),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                     new Claim(JwtRegisteredClaimNames.Aud, (string)payload.Audience),
+                    new ("userId", user.id.ToString())
                 };
 
-            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["JwtSecret"]));
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(/*"glyceric tiltyard setback resource wilding carport"*/_configuration["JwtSecret"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var token = new JwtSecurityToken(String.Empty,
+            /*var token = new JwtSecurityToken(String.Empty,
                   String.Empty,
                   claims,
-                  expires: DateTime.Now.AddSeconds(55 * 60),
-                  signingCredentials: creds);
+                  expires: DateTime.Now.AddSeconds(28800),
+                  signingCredentials: creds);*/
 
+            var token = new JwtSecurityToken(
+                issuer: "https://accounts.google.com",
+                audience: "86108609563-g3elr6e4kbqiqv677nuu1kltsul1sb0j.apps.googleusercontent.com",
+                claims,
+                expires: DateTime.Now.AddSeconds(28800),
+                signingCredentials: creds
+            );
 
             return Ok(new
             {
                 token = new JwtSecurityTokenHandler().WriteToken(token)
             });
+
+            /*var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.UtcNow.AddSeconds(28800),
+                Issuer = "https://accounts.google.com",
+                Audience = "86108609563-g3elr6e4kbqiqv677nuu1kltsul1sb0j.apps.googleusercontent.com",
+                SigningCredentials = creds
+            };
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            var jwt = tokenHandler.WriteToken(token);
+            return Ok(jwt);*/
         }
 
         private async Task<GoogleJsonWebSignature.Payload> VerifyGoogleTokenId(string token)

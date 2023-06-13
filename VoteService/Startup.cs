@@ -45,7 +45,7 @@ namespace VoteService
 
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration.GetConnectionString("VoteMongo")));
+            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration["VoteMongo"]));
             services.AddScoped<IVoteRepo, VoteRepo>();
             services.AddControllers();
             services.AddHostedService<MessageBusSubscriber>();
