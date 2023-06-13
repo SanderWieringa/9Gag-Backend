@@ -69,29 +69,31 @@ namespace PostService.Controllers
 
             // Use SCAN command to iterate over all keys in Redis
             string cursor = "0";
-
-            // Scan for keys matching a pattern (e.g., "*" for all keys)
-            RedisResult scanResult = redisDb.Execute("SCAN", cursor);
-
-            // Retrieve the cursor and the keys from the scan result
-            RedisResult[] scanArray = (RedisResult[])scanResult;
-            cursor = (string)scanArray[0];
-            RedisKey[] keys = (RedisKey[])scanArray[1];
-
-            // Use GET command to fetch the values of the keys
-            RedisValue[] values = redisDb.StringGet(keys);
-
-            // Process the retrieved values as desired
-            foreach (RedisValue value in values)
+            do
             {
-                // Do something with the value
-                PostRedisDto post = JsonSerializer.Deserialize<PostRedisDto>(value);
+                // Scan for keys matching a pattern (e.g., "*" for all keys)
+                RedisResult scanResult = redisDb.Execute("SCAN", cursor);
 
-                posts.Add(post);
-            }
+                // Retrieve the cursor and the keys from the scan result
+                RedisResult[] scanArray = (RedisResult[])scanResult;
+                cursor = (string)scanArray[0];
+                RedisKey[] keys = (RedisKey[])scanArray[1];
+
+                // Use GET command to fetch the values of the keys
+                RedisValue[] values = redisDb.StringGet(keys);
+
+                // Process the retrieved values as desired
+                foreach (RedisValue value in values)
+                {
+                    // Do something with the value
+                    PostRedisDto post = JsonSerializer.Deserialize<PostRedisDto>(value);
+
+                    posts.Add(post);
+                }
+            } while (cursor != "0");
 
             redis.Close();
-            redis.Dispose();
+            //redis.Dispose();
 
             return posts;
         }
@@ -106,7 +108,7 @@ namespace PostService.Controllers
         [Consumes("multipart/form-data")]
         public async Task<Post> Post([FromForm] PostCreateDto postCreateDto)
         {
-            await SaveImage(postCreateDto.ImageFile);
+            //await SaveImage(postCreateDto.ImageFile);
             Post postModel = ConvertToPost(postCreateDto);
 
             Post post = await _mediator.Send(new InsertPostCommand(postModel));
@@ -135,7 +137,7 @@ namespace PostService.Controllers
             return post;
         }
 
-        [NonAction]
+        /*[NonAction]
         public async Task<string> SaveImage(IFormFile imageFile)
         {
             string imageName = new String(Path.GetFileNameWithoutExtension(imageFile.FileName).Take(10).ToArray()).Replace(' ', '-');
@@ -148,6 +150,6 @@ namespace PostService.Controllers
             }
 
             return imageName;
-        }
+        }*/
     }
 }

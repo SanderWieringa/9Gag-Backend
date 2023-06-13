@@ -42,7 +42,8 @@ namespace PostService
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration["PostMongo"]));
+            //services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration["PostMongo"]));
+            services.AddSingleton<IMongoClient>(s => new MongoClient("mongodb+srv://sanderwieringa:wmKX4BRxr7GA@9gagcluster.td101fw.mongodb.net/PostDatabase?retryWrites=true&w=majority"));
             services.AddMediatR(typeof(PostCollectionRepo).Assembly);
             services.AddSwaggerGen(c =>
             {

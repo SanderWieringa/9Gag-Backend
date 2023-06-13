@@ -65,7 +65,7 @@ namespace PostService.AsyncDataServices
                  basicProperties: null,
                  body: body);
 
-            Console.WriteLine($"--> We have sent message: {message}");
+            Console.WriteLine($"--> We have sent message");
         }
 
         private void RabbitMQ_ConnectionShutdown(object sender, ShutdownEventArgs e)
