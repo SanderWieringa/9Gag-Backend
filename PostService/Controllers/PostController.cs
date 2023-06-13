@@ -85,8 +85,6 @@ namespace PostService.Controllers
             foreach (RedisValue value in values)
             {
                 // Do something with the value
-                Console.WriteLine(value);
-                string serializedValue = value.ToString();
                 PostRedisDto post = JsonSerializer.Deserialize<PostRedisDto>(value);
 
                 posts.Add(post);
