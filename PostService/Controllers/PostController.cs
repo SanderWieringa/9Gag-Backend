@@ -17,6 +17,7 @@ using Microsoft.Extensions.Configuration;
 using System.Net;
 using MongoDB.Bson.IO;
 using System.Text.Json;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace PostService.Controllers
 {
@@ -30,29 +31,31 @@ namespace PostService.Controllers
         private readonly IMessageBusClient _messageBusClient;
         private IEnumerable<Post> posts;
         private string loadLocation = "";
-        public IConfiguration Configuration { get; }
+        /*public IConfiguration Configuration { get; }*/
         private readonly IWebHostEnvironment _hostEnvironment;
-
         ConfigurationOptions options = null;
         ConnectionMultiplexer redis = null;
+        /*private readonly IServiceScopeFactory _serviceScopeFactory;*/
 
-        public PostController(IConfiguration configuration, IMapper mapper, IMediator mediator, IDistributedCache cache, IMessageBusClient messageBusClient, IWebHostEnvironment hostEnvironment)
+        public PostController(/*IServiceScopeFactory serviceScopeFactory, IConfiguration configuration, */IMapper mapper, IMediator mediator, IDistributedCache cache, IMessageBusClient messageBusClient, IWebHostEnvironment hostEnvironment)
         {
-            Configuration = configuration;
+            /*_serviceScopeFactory = serviceScopeFactory;
+            Configuration = configuration;*/
             _mapper = mapper;
             _mediator = mediator;
             _cache = cache;
             _messageBusClient = messageBusClient;
             _hostEnvironment = hostEnvironment;
-            options = new ConfigurationOptions
+            /*options = new ConfigurationOptions
             {
                 EndPoints = { { Configuration["Redis"], 10967 } },
                 Password = Configuration["RedisPassword"],
                 User = Configuration["RedisUser"],
                 Ssl = true, // Set to true if using SSL/TLS encryption
                 AbortOnConnectFail = false // Set to true to throw an exception on connection failure
-            };
-            redis = ConnectionMultiplexer.Connect(Configuration["Redis"]);
+            };*/
+            redis = ConnectionMultiplexer.Connect("redis-10967.c56.east-us.azure.cloud.redislabs.com:10967,password=kurzBTICAAVb1rPg5dkUqZG5K4U9f6sZ");
+            
         }
 
 
