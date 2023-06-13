@@ -50,7 +50,7 @@ namespace PostService
                     ValidateLifetime = true,
                     ValidIssuer = "https://accounts.google.com",
                     ValidAudience = "86108609563-g3elr6e4kbqiqv677nuu1kltsul1sb0j.apps.googleusercontent.com",
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSecret"]/*"glyceric tiltyard setback resource wilding carport"*/))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(/*Configuration["JwtSecret"]*/"glyceric tiltyard setback resource wilding carport"))
                 };
             });
             services.AddScoped<IPostCollectionRepo, PostCollectionRepo>();
@@ -59,8 +59,8 @@ namespace PostService
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
-            services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration["PostMongo"]));
-            //services.AddSingleton<IMongoClient>(s => new MongoClient("mongodb+srv://sanderwieringa:wmKX4BRxr7GA@9gagcluster.td101fw.mongodb.net/PostDatabase?retryWrites=true&w=majority"));
+            //services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration["PostMongo"]));
+            services.AddSingleton<IMongoClient>(s => new MongoClient("mongodb+srv://sanderwieringa:wmKX4BRxr7GA@9gagcluster.td101fw.mongodb.net/PostDatabase?retryWrites=true&w=majority"));
             services.AddMediatR(typeof(PostCollectionRepo).Assembly);
             services.AddSwaggerGen(c =>
             {

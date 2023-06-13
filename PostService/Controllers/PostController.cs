@@ -54,7 +54,7 @@ namespace PostService.Controllers
                 Ssl = true, // Set to true if using SSL/TLS encryption
                 AbortOnConnectFail = false // Set to true to throw an exception on connection failure
             };*/
-            redis = ConnectionMultiplexer.Connect(Configuration["Redis"]);
+            redis = ConnectionMultiplexer.Connect(/*Configuration["Redis"]*/"redis-10967.c56.east-us.azure.cloud.redislabs.com:10967,password=kurzBTICAAVb1rPg5dkUqZG5K4U9f6sZ");
             
         }
 
