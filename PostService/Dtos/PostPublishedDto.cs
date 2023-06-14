@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using Microsoft.AspNetCore.SignalR;
+using MongoDB.Bson;
 
 namespace PostService.Dtos
 {
@@ -7,8 +8,7 @@ namespace PostService.Dtos
         public ObjectId Id { get; set; }
         public string Title { get; set; }
         public byte[] ImageFile { get; set; }
-
-        /*public IFormFile ImageFile { get; set; }*/
+        public ObjectId UserId { get; set; }
 
         public string Event { get; set; }
 
@@ -22,6 +22,7 @@ namespace PostService.Dtos
                 stream.CopyTo(memoryStream);
                 ImageFile = memoryStream.ToArray();
             }
+            UserId = postReadDto.UserId;
         }
     }
 }

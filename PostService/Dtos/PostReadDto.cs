@@ -11,5 +11,6 @@ namespace PostService.Dtos
         public string Title { get; set; }
 
         public IFormFile ImageFile { get; set; }
+        public ObjectId UserId { get; set; }
     }
 }

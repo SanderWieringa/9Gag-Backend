@@ -17,6 +17,8 @@ namespace PostService.Models
         public string Title { get; set; }
         [BsonElement("imageFile")]
         public IFormFile ImageFile { get; set; }
+        [BsonElement("userId")]
+        public ObjectId UserId { get; set; }
 
         public Post(ObjectId id, string title)
         {

@@ -11,11 +11,14 @@ namespace PostService.Models
         public string Title { get; set; }
         [BsonElement("imageFile")]
         public byte[] ImageFile { get; set; }
+        [BsonElement("userId")]
+        public ObjectId UserId { get; set; }
 
-        public PostModel(string title, byte[] imageFile)
+        public PostModel(string title, byte[] imageFile, ObjectId userId)
         {
             Title = title;
             ImageFile = imageFile;
+            UserId = userId;
         }
     }
 }

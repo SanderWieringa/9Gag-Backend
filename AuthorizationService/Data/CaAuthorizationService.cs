@@ -22,10 +22,10 @@ namespace AuthorizationService.Data
             return FindUserOrAdd(payload);
         }
 
-        /*public User GetUserByEmail(Payload payload)
+        public User GetUserByEmail(Payload payload)
         {
             return _repo.GetAllUsers().Where(x => x.email == payload.Email).FirstOrDefault();
-        }*/
+        }
 
         public void RemoveUser(string jwt)
         {

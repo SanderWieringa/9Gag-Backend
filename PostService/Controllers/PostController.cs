@@ -20,6 +20,7 @@ using System.Text.Json;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authorization;
 using System.Data;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace PostService.Controllers
 {
@@ -110,7 +111,14 @@ namespace PostService.Controllers
         public async Task<Post> Post([FromForm] PostCreateDto postCreateDto)
         {
             //await SaveImage(postCreateDto.ImageFile);
+            string bearerToken = HttpContext.Request.Headers["Authorization"];
+            string token = bearerToken.Substring(7);
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            JwtSecurityToken readToken = tokenHandler.ReadJwtToken(token);
+            var id = readToken.Claims.First(user => user.Type == "userId").Value;
+
             Post postModel = ConvertToPost(postCreateDto);
+            postModel.UserId = ObjectId.Parse(id);
 
             Post post = await _mediator.Send(new InsertPostCommand(postModel));
 

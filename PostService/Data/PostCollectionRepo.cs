@@ -27,7 +27,7 @@ namespace PostService.Data
 
                     var fileData = memoryStream.ToArray();
 
-                    var postDocument = new PostModel(post.Title, fileData);
+                    var postDocument = new PostModel(post.Title, fileData, post.UserId);
 
                     _posts.InsertOne(postDocument);
                 }
@@ -69,7 +69,7 @@ namespace PostService.Data
 
                     var fileData = memoryStream.ToArray();
 
-                    var postDocument = new PostModel(post.Title, fileData);
+                    var postDocument = new PostModel(post.Title, fileData, post.UserId);
 
                     _posts.InsertOne(postDocument);
                 }
