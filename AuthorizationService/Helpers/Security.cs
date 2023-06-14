@@ -68,5 +68,43 @@ namespace AuthorizationService.Helpers
             }
             return Convert.ToBase64String(keyArray, 0, keyArray.Length);
         }
+
+        public static string Decrypt(byte[] encryptedBytes, string password)
+        {
+            string decryptedText = null;
+            try
+            {
+                using (var sha512 = SHA512.Create())
+                {
+                    byte[] key = sha512.ComputeHash(Encoding.UTF8.GetBytes(password));
+                    byte[] truncatedKey = new byte[32]; // 256-bit key size
+
+                    Buffer.BlockCopy(key, 0, truncatedKey, 0, truncatedKey.Length);
+
+                    using (var aes = Aes.Create())
+                    {
+                        aes.Key = truncatedKey;
+                        byte[] iv = new byte[aes.BlockSize / 8];
+                        byte[] cipherBytes = new byte[encryptedBytes.Length - iv.Length];
+
+                        Buffer.BlockCopy(encryptedBytes, 0, iv, 0, iv.Length);
+                        Buffer.BlockCopy(encryptedBytes, iv.Length, cipherBytes, 0, cipherBytes.Length);
+
+                        aes.IV = iv;
+
+                        using (var decryptor = aes.CreateDecryptor())
+                        {
+                            byte[] plainBytes = decryptor.TransformFinalBlock(cipherBytes, 0, cipherBytes.Length);
+                            decryptedText = Encoding.UTF8.GetString(plainBytes);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            return decryptedText;
+        }
     }
 }

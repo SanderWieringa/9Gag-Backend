@@ -2,6 +2,8 @@
 using AuthorizationService.Models;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication;
+using MongoDB.Bson;
+using System.IdentityModel.Tokens.Jwt;
 using static Google.Apis.Auth.GoogleJsonWebSignature;
 
 namespace AuthorizationService.Data
@@ -18,6 +20,23 @@ namespace AuthorizationService.Data
         public async Task<User> Authenticate(Payload payload)
         {
             return FindUserOrAdd(payload);
+        }
+
+        /*public User GetUserByEmail(Payload payload)
+        {
+            return _repo.GetAllUsers().Where(x => x.email == payload.Email).FirstOrDefault();
+        }*/
+
+        public void RemoveUser(string jwt)
+        {
+            JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
+            JwtSecurityToken token = tokenHandler.ReadJwtToken(jwt);
+            var id = token.Claims.First(user => user.Type == "userId").Value;
+            ObjectId userId = _repo.GetAllUsers().Where(x => x.id == ObjectId.Parse(id)).FirstOrDefault().id;
+            if (userId != null)
+            {
+                _repo.DeleteUser(userId);
+            }
         }
 
         private User FindUserOrAdd(Payload payload)

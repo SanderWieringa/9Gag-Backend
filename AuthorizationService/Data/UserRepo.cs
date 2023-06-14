@@ -1,4 +1,5 @@
 ﻿using AuthorizationService.Models;
+using MongoDB.Bson;
 using MongoDB.Driver;
 
 namespace AuthorizationService.Data
@@ -22,6 +23,11 @@ namespace AuthorizationService.Data
                 throw new ArgumentNullException(nameof(user));
             }
             _users.InsertOne(user);
+        }
+
+        public void DeleteUser(ObjectId id)
+        {
+            _users.DeleteOne(user => user.id == id);
         }
 
         public IEnumerable<User> GetAllUsers()

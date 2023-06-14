@@ -1,4 +1,5 @@
 ﻿using AuthorizationService.Models;
+using MongoDB.Bson;
 
 namespace AuthorizationService.Data
 {
@@ -6,6 +7,7 @@ namespace AuthorizationService.Data
     {
         IEnumerable<User> GetAllUsers();
         void CreateUser(User user);
+        void DeleteUser(ObjectId id);
         /*bool SaveChanges();*/
     }
 }

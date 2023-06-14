@@ -12,6 +12,7 @@ using AuthorizationService.Helpers;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace AuthorizationService.Controllers
 {
@@ -46,6 +47,13 @@ namespace AuthorizationService.Controllers
             }
 
             return BadRequest("Invalid token");
+        }
+
+        [HttpDelete]
+        /*[Authorize]*/
+        public IActionResult RemoveUser([FromBody] DeleteRequest request){
+            _authService.RemoveUser(request.Jwt);
+            return Ok();
         }
 
         [HttpPost]
