@@ -63,7 +63,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          cd PostService
+          cd VoteService
           docker build --tag ${{ env.ACR_REGISTRY }}/${{ env.K8S_DEPLOYMENT_NAME }} .
           docker push ${{ env.ACR_REGISTRY }}/${{ env.K8S_DEPLOYMENT_NAME }}
 
