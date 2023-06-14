@@ -1,4 +1,5 @@
-﻿using AuthorizationService.Data;
+﻿using AuthorizationService.AsyncDataServices;
+using AuthorizationService.Data;
 using AuthorizationService.Models;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -45,6 +46,7 @@ namespace AuthorizationService
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));
             services.AddSingleton<IDatabaseSettings>(sp => sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             services.AddSingleton<IMongoClient>(s => new MongoClient(Configuration["AuthMongo"]));
+            services.AddSingleton<IMessageBusClient, MessageBusClient>();
             services.AddScoped<IUserRepo, UserRepo>();
             services.AddScoped<IAuthService, CaAuthorizationService>();
             services.AddControllers();

@@ -22,12 +22,13 @@ namespace AuthorizationService.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly IAuthService _authService;
-        // test
+        /*private readonly IMessageBusClient _messageBusClient;*/
 
-        public GoogleAuthorizationController(IAuthService authService, IConfiguration configuration)
+        public GoogleAuthorizationController(IAuthService authService, IConfiguration configuration/*, IMessageBusClient messageBusClient*/)
         {
             _configuration = configuration;
             _authService = authService;
+            /*_messageBusClient = messageBusClient;*/
         }
 
         [HttpPost]

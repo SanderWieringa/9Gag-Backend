@@ -1,4 +1,5 @@
-﻿using AuthorizationService.Dtos;
+﻿using AuthorizationService.AsyncDataServices;
+using AuthorizationService.Dtos;
 using AuthorizationService.Models;
 using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authentication;
@@ -11,10 +12,12 @@ namespace AuthorizationService.Data
     public class CaAuthorizationService : IAuthService
     {
         private readonly IUserRepo _repo;
+        private readonly IMessageBusClient _messageBusClient;
 
-        public CaAuthorizationService(IUserRepo repo)
+        public CaAuthorizationService(IUserRepo repo, IMessageBusClient messageBusClient)
         {
             _repo = repo;
+            _messageBusClient = messageBusClient;
         }
 
         public async Task<User> Authenticate(Payload payload)
@@ -31,8 +34,23 @@ namespace AuthorizationService.Data
         {
             JwtSecurityTokenHandler tokenHandler = new JwtSecurityTokenHandler();
             JwtSecurityToken token = tokenHandler.ReadJwtToken(jwt);
+
             var id = token.Claims.First(user => user.Type == "userId").Value;
             ObjectId userId = _repo.GetAllUsers().Where(x => x.id == ObjectId.Parse(id)).FirstOrDefault().id;
+
+            // Send Async Message
+            try
+            {
+                UserRemovedDto userRemovedDto = new UserRemovedDto(id);
+                /*var platformPublishedDto = _mapper.Map<PostPublishedDto>(postReadDto);*/
+                userRemovedDto.Event = "User_Removed";
+                _messageBusClient.RemoveUserPosts(userRemovedDto);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"--> Could not send asynchronously: {e.Message}");
+            }
+
             if (userId != null)
             {
                 _repo.DeleteUser(userId);
