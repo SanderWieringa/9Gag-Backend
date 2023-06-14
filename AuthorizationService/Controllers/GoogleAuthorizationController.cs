@@ -78,7 +78,7 @@ namespace AuthorizationService.Controllers
                     new ("userId", user.id.ToString())
                 };
 
-            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(/*"glyceric tiltyard setback resource wilding carport"*/_configuration["JwtSecret"]));
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("glyceric tiltyard setback resource wilding carport"/*_configuration["JwtSecret"]*/));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             /*var token = new JwtSecurityToken(String.Empty,
