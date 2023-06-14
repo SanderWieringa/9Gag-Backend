@@ -50,6 +50,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
+          cd AuthorizationService
           docker build -t sanderwieringa/authorizationservice:latest .
           docker push sanderwieringa/authorizationservice:latest
 
@@ -62,7 +63,7 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          cd PostService
+          cd AuthorizationService
           docker build --tag ${{ env.ACR_REGISTRY }}/${{ env.K8S_DEPLOYMENT_NAME }} .
           docker push ${{ env.ACR_REGISTRY }}/${{ env.K8S_DEPLOYMENT_NAME }}
 
