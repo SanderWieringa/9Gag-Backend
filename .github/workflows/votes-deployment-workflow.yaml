@@ -50,6 +50,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
+          cd VoteService
           docker build -t sanderwieringa/voteservice:latest .
           docker push sanderwieringa/voteservice:latest
 
