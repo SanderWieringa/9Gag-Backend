@@ -31,7 +31,7 @@ namespace PostService.Controllers
         private readonly IMapper _mapper;
         private readonly IMediator _mediator;
         private readonly IDistributedCache _cache;
-        private readonly IMessageBusClient _messageBusClient;
+        private readonly IRabbitMQProducer _messageBusClient;
         private IEnumerable<Post> posts;
         private string loadLocation = "";
         public IConfiguration Configuration { get; }
@@ -39,7 +39,7 @@ namespace PostService.Controllers
         ConfigurationOptions options = null;
         ConnectionMultiplexer redis = null;
 
-        public PostController(IConfiguration configuration, IMapper mapper, IMediator mediator, IDistributedCache cache, IMessageBusClient messageBusClient, IWebHostEnvironment hostEnvironment)
+        public PostController(IConfiguration configuration, IMapper mapper, IMediator mediator, IDistributedCache cache, IRabbitMQProducer messageBusClient, IWebHostEnvironment hostEnvironment)
         {
             Configuration = configuration;
             _mapper = mapper;
@@ -85,6 +85,7 @@ namespace PostService.Controllers
                 foreach (RedisValue value in values)
                 {
                     // Do something with the value
+                    Console.WriteLine(value);
                     PostRedisDto post = JsonSerializer.Deserialize<PostRedisDto>(value);
 
                     posts.Add(post);

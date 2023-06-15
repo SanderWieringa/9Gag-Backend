@@ -22,6 +22,7 @@ using MongoDB.Driver;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using PostService.EventProcessing;
 
 namespace PostService
 {
@@ -54,7 +55,9 @@ namespace PostService
                 };
             });
             services.AddScoped<IPostCollectionRepo, PostCollectionRepo>();
-            services.AddSingleton<IMessageBusClient, MessageBusClient>();
+            services.AddSingleton<IRabbitMQProducer, RabbitMQProducer>();
+            services.AddSingleton<IEventProcessor, EventProcessor>();
+            services.AddHostedService<RabbitMQConsumer>();
             services.AddControllers();
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.Configure<DatabaseSettings>(Configuration.GetSection(nameof(DatabaseSettings)));

@@ -13,5 +13,7 @@ namespace PostService.Dtos
         public string Title { get; set; }
         [JsonPropertyName("imageFile")]
         public byte[] ImageFile { get; set; }
+        [JsonPropertyName("userId")]
+        public string UserId { get; set; }
     }
 }

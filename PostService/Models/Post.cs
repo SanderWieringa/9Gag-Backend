@@ -48,6 +48,7 @@ namespace PostService.Models
             {
                 ImageFile = new FormFile(memoryStream, 0, postModel.ImageFile.Length, null, ".png");
             }
+            UserId = postModel.UserId;
         }
 
         public Post(string title, IFormFile imageFile)

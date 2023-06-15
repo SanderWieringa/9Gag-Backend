@@ -7,13 +7,13 @@ using System.Threading.Channels;
 
 namespace PostService.AsyncDataServices
 {
-    public class MessageBusClient : IMessageBusClient
+    public class RabbitMQProducer : IRabbitMQProducer
     {
         private readonly IConfiguration _configuration;
         private readonly IConnection _connection;
         private readonly IModel _channel;
 
-        public MessageBusClient(IConfiguration configuration)
+        public RabbitMQProducer(IConfiguration configuration)
         {
             _configuration = configuration;
             var factory = new ConnectionFactory()

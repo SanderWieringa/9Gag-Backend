@@ -2,7 +2,7 @@
 
 namespace PostService.AsyncDataServices
 {
-    public interface IMessageBusClient
+    public interface IRabbitMQProducer
     {
         void PublishNewPost(PostPublishedDto postPublishedDto);
     }

@@ -34,6 +34,31 @@ namespace PostService.Data
             }
         }
 
+        public IEnumerable<Post> DeletePosts(IEnumerable<Post> postsToDelete)
+        {
+            if (_posts != null)
+            {
+                List<PostModel> postModelsToDelete = new List<PostModel>();
+                using (var memoryStream = new MemoryStream())
+                {
+                    foreach (var item in postsToDelete)
+                    {
+                        byte[] fileData = null;
+
+                        item.ImageFile.CopyTo(memoryStream);
+
+                        fileData = memoryStream.ToArray();
+
+                        postModelsToDelete.Add(new PostModel(item.Title, fileData, item.UserId));
+                    }
+                }
+
+                _posts.DeleteMany(FilterDefinition<PostModel>.Empty);
+            }
+
+            return postsToDelete;
+        }
+
         public IEnumerable<Post> GetAllPosts()
         {
             var postModelList = _posts.Find(post => true).ToList();
