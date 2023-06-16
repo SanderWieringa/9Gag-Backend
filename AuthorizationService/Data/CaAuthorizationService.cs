@@ -36,24 +36,25 @@ namespace AuthorizationService.Data
             JwtSecurityToken token = tokenHandler.ReadJwtToken(jwt);
 
             var id = token.Claims.First(user => user.Type == "userId").Value;
-            ObjectId userId = _repo.GetAllUsers().Where(x => x.id == ObjectId.Parse(id)).FirstOrDefault().id;
 
             // Send Async Message
             try
             {
+                ObjectId userId = _repo.GetAllUsers().Where(x => x.id == ObjectId.Parse(id)).FirstOrDefault().id;
+
                 UserRemovedDto userRemovedDto = new UserRemovedDto(id);
                 /*var platformPublishedDto = _mapper.Map<PostPublishedDto>(postReadDto);*/
                 userRemovedDto.Event = "User_Removed";
                 _messageBusClient.RemoveUserPosts(userRemovedDto);
+
+                if (userId != null)
+                {
+                    _repo.DeleteUser(userId);
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine($"--> Could not send asynchronously: {e.Message}");
-            }
-
-            if (userId != null)
-            {
-                _repo.DeleteUser(userId);
             }
         }
 

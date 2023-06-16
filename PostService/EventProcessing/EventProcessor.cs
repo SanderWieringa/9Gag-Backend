@@ -56,9 +56,14 @@ namespace PostService.EventProcessing
 
                 try
                 {
-                    IEnumerable<Post> postsToDelete = repo.GetAllPosts().Where(x => x.UserId == ObjectId.Parse(userRemovedDto.UserId));
+                    /*IEnumerable<Post> postsToDelete = repo.GetAllPosts().Where(x => x.UserId == ObjectId.Parse(userRemovedDto.UserId));
                     if (postsToDelete.Any()) {
                         repo.DeletePosts(postsToDelete);
+                    }*/
+
+                    if (userRemovedDto.UserId != null)
+                    {
+                        repo.DeletePosts(ObjectId.Parse(userRemovedDto.UserId));
                     }
                     
                     /*PostModel postmodel = new PostModel(postPublishedDto);
@@ -72,7 +77,7 @@ namespace PostService.EventProcessing
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine($"--> Could not add Post to DB {e.Message}");
+                    Console.WriteLine($"--> Could not add Post to DB: {e.Message}");
                 }
             }
         }

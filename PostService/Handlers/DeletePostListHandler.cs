@@ -16,7 +16,7 @@ namespace PostService.Handlers
 
         public Task<IEnumerable<Post>> Handle(DeletePostListCommand request, CancellationToken cancellationToken)
         {
-            return Task.FromResult(this._repo.DeletePosts(request.postList));
+            return Task.FromResult(_repo.DeletePosts(request.postList));
         }
     }
 }

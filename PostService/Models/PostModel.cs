@@ -20,5 +20,18 @@ namespace PostService.Models
             ImageFile = imageFile;
             UserId = userId;
         }
+
+        public PostModel(ObjectId id, string title, byte[] imageFile, ObjectId userId)
+        {
+            Id = id;
+            Title = title;
+            ImageFile = imageFile;
+            UserId = userId;
+        }
+
+        public PostModel()
+        {
+            
+        }
     }
 }
