@@ -4,6 +4,7 @@ using System;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using System.Reflection;
+using System.IO;
 
 namespace PostService.Data
 {
@@ -39,18 +40,52 @@ namespace PostService.Data
             if (_posts != null)
             {
                 List<PostModel> postModelsToDelete = new List<PostModel>();
-                using (var memoryStream = new MemoryStream())
+
+                /* try
+                 {
+                     using (var memoryStream = new MemoryStream())
+                     {
+                         foreach (var item in postsToDelete)
+                         {
+                             byte[] fileData = null;
+
+                             item.ImageFile.CopyTo(memoryStream);
+
+                             fileData = memoryStream.ToArray();
+
+                             postModelsToDelete.Add(new PostModel(item.Title, fileData, item.UserId));
+                             memoryStream.Position = 0;
+                         }
+                     }
+                 }
+                 finally
+                 {
+                     if (sw != null) sw.Dispose();
+                     if (sr != null) sr.Dispose();
+                 }*/
+
+                foreach (var item in postsToDelete)
                 {
-                    foreach (var item in postsToDelete)
-                    {
-                        byte[] fileData = null;
+                    byte[] fileData = null;
+                    
+                        using (var memoryStream = new MemoryStream())
+                        {
+                            item.ImageFile.CopyTo(memoryStream);
+                            fileData = memoryStream.ToArray();
 
-                        item.ImageFile.CopyTo(memoryStream);
+                            // Use the fileBytes as needed (e.g., save it to the database, perform some processing, etc.)
 
-                        fileData = memoryStream.ToArray();
+                           
+                        }
 
-                        postModelsToDelete.Add(new PostModel(item.Title, fileData, item.UserId));
-                    }
+                    postModelsToDelete.Add(new PostModel(item.Title, fileData, item.UserId));
+
+                    /* item.ImageFile.CopyTo(memoryStream);
+
+                     fileData = memoryStream.ToArray();
+
+                     postModelsToDelete.Add(new PostModel(item.Title, fileData, item.UserId));*/
+
                 }
 
                 _posts.DeleteMany(FilterDefinition<PostModel>.Empty);

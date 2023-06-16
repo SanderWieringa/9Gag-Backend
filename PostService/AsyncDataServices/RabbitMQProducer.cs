@@ -26,7 +26,14 @@ namespace PostService.AsyncDataServices
                 _connection = factory.CreateConnection();
                 _channel = _connection.CreateModel();
 
-                _channel.ExchangeDeclare(exchange: "trigger", type: ExchangeType.Fanout);
+                _channel.ExchangeDeclare(exchange: "PublishPostExchange", type: ExchangeType.Fanout);
+
+                _channel.QueueDeclare("PublishPostQueue",
+                    durable: true,
+                    exclusive: false,
+                    autoDelete: false,
+                    arguments: null);
+                _channel.QueueBind("PublishPostQueue", "PublishPostExchange", "PostService.Created.*");
 
                 _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
 

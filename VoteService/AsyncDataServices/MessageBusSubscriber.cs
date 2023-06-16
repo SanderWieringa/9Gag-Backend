@@ -28,9 +28,10 @@ namespace VoteService.AsyncDataServices
 
             _connection = factory.CreateConnection();
             _channel = _connection.CreateModel();
-            _channel.ExchangeDeclare(exchange: "trigger", type: ExchangeType.Fanout);
-            _queueName = _channel.QueueDeclare().QueueName;
-            _channel.QueueBind(queue: _queueName, exchange: "trigger", routingKey: "");
+
+            _channel.ExchangeDeclare(exchange: "PublishPostExchange", type: ExchangeType.Fanout);
+            _channel.QueueDeclare("PublishPostQueue", true, false, false, null);
+            _channel.QueueBind(queue: "PublishPostQueue", exchange: "PublishPostExchange", routingKey: "PostService.Created.*");
 
             Console.WriteLine("--> Listening on the Message Bus...");
 

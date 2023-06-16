@@ -1,4 +1,5 @@
 ﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 using ThirdParty.Json.LitJson;
 
@@ -15,5 +16,18 @@ namespace PostService.Dtos
         public byte[] ImageFile { get; set; }
         [JsonPropertyName("userId")]
         public string UserId { get; set; }
+
+        public PostRedisDto()
+        {
+
+        }
+
+        public PostRedisDto(string id, string title, byte[] imageFile, string userId)
+        {
+            Id = id;
+            Title = title;
+            ImageFile = imageFile;
+            UserId = userId;
+        }
     }
 }
