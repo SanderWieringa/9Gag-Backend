@@ -78,12 +78,13 @@ namespace VoteService.EventProcessing
 
                 try
                 {
-                    PostModel postmodel = new PostModel(postPublishedDto);
-                    var post = _mapper.Map<Post>(postmodel);
-                    PostDbDto postDto = new PostDbDto(post);
-                    if (!repo.ExternalPostExists(postDto.ExternalId))
+                    //PostModel postmodel = new PostModel(postPublishedDto);
+                    var post = _mapper.Map<PostDbDto>(postPublishedDto);
+                    //PostDbDto postDto = new PostDbDto(post);
+                    if (!repo.ExternalPostExists(post.ExternalId))
                     {
-                        repo.CreatePost(postDto);
+                        repo.CreatePost(post);
+                        repo.SaveChanges();
                         Console.WriteLine("--> Post added...");
                     }
                 }

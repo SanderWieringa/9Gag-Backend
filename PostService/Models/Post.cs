@@ -32,7 +32,7 @@ namespace PostService.Models
             Title = title;
             using (var memoryStream = new MemoryStream(imageFile))
             {
-                ImageFile = new FormFile(memoryStream, 0, imageFile.Length, null, ".png");
+                ImageFile = new FormFile(memoryStream, 0, imageFile.Length, null, "");
             }
         }
 
@@ -43,10 +43,11 @@ namespace PostService.Models
 
         public Post(PostModel postModel)
         {
+            Id = postModel.Id;
             Title = postModel.Title;
             using (var memoryStream = new MemoryStream(postModel.ImageFile))
             {
-                ImageFile = new FormFile(memoryStream, 0, postModel.ImageFile.Length, null, ".png");
+                ImageFile = new FormFile(memoryStream, 0, postModel.ImageFile.Length, null, "");
             }
             UserId = postModel.UserId;
         }

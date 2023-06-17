@@ -113,21 +113,29 @@ namespace PostService.Data
 
         public Post InsertPost(Post post)
         {
+            Post insertedPost;
             if (post.ImageFile != null && post.ImageFile.Length > 0)
             {
+                PostModel postDocument = null;
                 using (var memoryStream = new MemoryStream())
                 {
                     post.ImageFile.CopyTo(memoryStream);
 
                     var fileData = memoryStream.ToArray();
 
-                    var postDocument = new PostModel(post.Title, fileData, post.UserId);
+                    postDocument = new PostModel(post.Title, fileData, post.UserId);
 
                     _posts.InsertOne(postDocument);
                 }
+
+                insertedPost = new Post(postDocument);
+            }
+            else
+            {
+                insertedPost = new Post();
             }
             
-            return post;
+            return insertedPost;
         }
     }
 }

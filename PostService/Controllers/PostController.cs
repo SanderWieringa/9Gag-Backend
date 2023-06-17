@@ -121,7 +121,7 @@ namespace PostService.Controllers
 
             Post post = await _mediator.Send(new InsertPostCommand(postModel));
 
-            var postReadDto = _mapper.Map<PostReadDto>(postModel);
+            var postReadDto = _mapper.Map<PostReadDto>(post);
 
             // Send Async Message
             try

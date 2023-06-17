@@ -56,24 +56,10 @@ namespace PostService.EventProcessing
 
                 try
                 {
-                    /*IEnumerable<Post> postsToDelete = repo.GetAllPosts().Where(x => x.UserId == ObjectId.Parse(userRemovedDto.UserId));
-                    if (postsToDelete.Any()) {
-                        repo.DeletePosts(postsToDelete);
-                    }*/
-
                     if (userRemovedDto.UserId != null)
                     {
                         repo.DeletePosts(ObjectId.Parse(userRemovedDto.UserId));
                     }
-                    
-                    /*PostModel postmodel = new PostModel(postPublishedDto);
-                    var post = _mapper.Map<Post>(postmodel);
-                    PostDbDto postDto = new PostDbDto(post);
-                    if (!repo.ExternalPostExists(postDto.ExternalId))
-                    {
-                        repo.CreatePost(postDto);
-                        Console.WriteLine("--> Post added...");
-                    }*/
                 }
                 catch (Exception e)
                 {

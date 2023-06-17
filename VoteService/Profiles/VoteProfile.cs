@@ -10,10 +10,10 @@ namespace VoteService.Profiles
     {
         public VoteProfile()
         {
-            CreateMap<Post, PostReadDto>();
+            CreateMap<PostDbDto, PostReadDto>();
             CreateMap<VoteCreateDto, Vote>();
             CreateMap<Vote, VoteReadDto>();
-            CreateMap<PostModel, Post>()
+            CreateMap<PostPublishedDto, PostDbDto>()
                 .ForMember(destination => destination.ExternalId, options => options.MapFrom(source => source.Id));
         }
     }

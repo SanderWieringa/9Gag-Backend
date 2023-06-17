@@ -59,7 +59,7 @@ namespace VoteService.AsyncDataServices
                 _eventProcessor.ProcessEvent(notificationMessage);
             };
 
-            _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
+            _channel.BasicConsume(queue: "PublishPostQueue", autoAck: true, consumer: consumer);
 
             return Task.CompletedTask;
 

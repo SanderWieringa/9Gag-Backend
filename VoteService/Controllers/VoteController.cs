@@ -70,6 +70,7 @@ namespace VoteService.Controllers
             var vote = _mapper.Map<Vote>(voteDto);
 
             _repo.CreateVote(postId, vote);
+            _repo.SaveChanges();
 
             var voteReadDto = _mapper.Map<VoteReadDto>(vote);
 

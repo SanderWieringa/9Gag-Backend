@@ -17,7 +17,7 @@ namespace VoteService.Models
 
         public PostModel(PostPublishedDto postPublishedDto)
         {
-            Id = postPublishedDto.Id;
+            Id = ObjectId.Parse(postPublishedDto.Id);
             Title = postPublishedDto.Title;
             using (var memoryStream = new MemoryStream(postPublishedDto.ImageFile))
             {

@@ -28,5 +28,23 @@ namespace VoteService.Dtos
                 ImageFile = memoryStream.ToArray();
             }
         }
+
+        public PostDbDto()
+        {
+            
+        }
+
+        /*public PostDbDto(PostPublishedDto post)
+        {
+            Id = post.Id;
+            ExternalId = post.ExternalId;
+            Title = post.Title;
+            using (var memoryStream = new MemoryStream())
+            {
+                post.ImageFile.CopyToAsync(memoryStream).Wait();
+                memoryStream.Position = 0;
+                ImageFile = memoryStream.ToArray();
+            }
+        }*/
     }
 }

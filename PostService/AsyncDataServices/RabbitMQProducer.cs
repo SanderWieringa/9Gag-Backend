@@ -47,6 +47,10 @@ namespace PostService.AsyncDataServices
 
         public void PublishNewPost(PostPublishedDto postPublishedDto)
         {
+            Console.WriteLine(postPublishedDto);
+            Console.WriteLine(postPublishedDto.Id);
+            Console.WriteLine(postPublishedDto.Title);
+            Console.WriteLine(postPublishedDto.UserId);
             var message = JsonSerializer.Serialize(postPublishedDto);
 
             try
@@ -67,8 +71,8 @@ namespace PostService.AsyncDataServices
         {
             var body = Encoding.UTF8.GetBytes(message);
 
-            _channel.BasicPublish(exchange: "trigger",
-                routingKey: "",
+            _channel.BasicPublish(exchange: "PublishPostExchange",
+                routingKey: "PostService.Created.PostServicePublishPost",
                  basicProperties: null,
                  body: body);
 

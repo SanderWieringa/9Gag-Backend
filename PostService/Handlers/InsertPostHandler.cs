@@ -16,7 +16,7 @@ namespace PostService.Handlers
 
         public Task<Post> Handle(InsertPostCommand request, CancellationToken cancellationToken)
         {
-            return Task.FromResult(this._repo.InsertPost(request.post));
+            return Task.FromResult(_repo.InsertPost(request.post));
         }
     }
 }
